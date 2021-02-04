@@ -27,6 +27,8 @@ const char* fragmentShaderSource = "#version 330 core\n"
 
 int main() {
 
+#pragma region Creating-Window
+
     //Initialize opengl so that the functions can be used
 	glfwInit();
     //Set the configuration of the window
@@ -57,12 +59,16 @@ int main() {
     //Every time the window is resized this will correct it.
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+#pragma endregion
+
     //Verices for a triangle
     float vertices[] = {
     -0.5f, -0.5f, 0.0f, //Left
      0.5f, -0.5f, 0.0f, //Right
      0.0f,  0.5f, 0.0f //Top
     };
+
+#pragma region Vertex-buffer
 
     //A vertex buffer object (VBO) stores all vertex information that will be sent to the graphics card.
     unsigned int VBO;
@@ -86,6 +92,10 @@ int main() {
     //The vertex shader takes as input a single vertex. 
     //The main purpose of the vertex shader is to transform 3D coordinates into different 3D coordinates
     //The vertex shader allows us to do some basic processing on the vertex attributes.
+
+#pragma endregion
+
+#pragma region Shaders
 
     //Vertex shader:
     unsigned int vertexShader;
@@ -145,12 +155,14 @@ int main() {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
+#pragma endregion
+
     //The GPU has now the vertex data and the instructions on how it should process the vertex data within a vertex and fragment shader.
     //Next OpenGl has to understand how it should interpret the vertex data in memory and how it should connect the vertex data to the vertex shader's attributes.
 
     //Linking Vertex Attributes
 
-
+    //Thise runs while the window has not gotten the instructions to close
     while (!glfwWindowShouldClose(window)) {
         //Input
         processInput(window);
@@ -164,18 +176,18 @@ int main() {
         glfwPollEvents();
     }
 
-
-
     glfwTerminate();
     return 0;
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    glViewport(0, 0, width, height);
+    glViewport(0, 0, width, height); //Change the viewport to the desired width and height
 }
 
 void processInput(GLFWwindow* window)
 {
+    //Check if the key is pressed
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        //Instruct the window to close
         glfwSetWindowShouldClose(window, true);
 }

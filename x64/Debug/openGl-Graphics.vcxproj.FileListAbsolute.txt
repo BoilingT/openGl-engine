@@ -1,2 +1,4 @@
 C:\Users\tobbe\Documents\Coding\C++\learning\openGl-Graphics\x64\Debug\openGl-Graphics.exe
 C:\Users\tobbe\Documents\Coding\C++\learning\openGl-Graphics\x64\Debug\openGl-Graphics.pdb
+C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\x64\Debug\openGl-Graphics.exe
+C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\x64\Debug\openGl-Graphics.pdb

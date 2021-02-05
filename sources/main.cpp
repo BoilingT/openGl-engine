@@ -22,7 +22,7 @@ const char* fragmentShaderSource = "#version 330 core\n"
 "out vec4 FragColor;\n"
 "void main()\n"
 "{\n"
-"FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+"FragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);\n"
 "} \0";
 
 int main() {
@@ -62,20 +62,56 @@ int main() {
 #pragma endregion
 
     //Verices for a triangle
-    float vertices[] = {
+    float verticefs[] = {
     -0.5f, -0.5f, 0.0f, //Left
      0.5f, -0.5f, 0.0f, //Right
      0.0f,  0.5f, 0.0f //Top
     };
 
-#pragma region Vertex-buffer
+    float verticesszs[] = {
+     0.5f,  0.5f, 0.0f,  // top right
+     0.5f, -0.5f, 0.0f,  // bottom right
+    -0.5f, -0.5f, 0.0f,  // bottom left
+    -0.5f,  0.5f, 0.0f   // top left 
+    };
+
+    unsigned int indices[] = {  // note that we start from 0!
+    0, 1, 3,   // first triangle
+    1, 2, 3    // second triangle
+    };
+
+    float vertices[] = {
+        // first triangle
+         0.5f,  0.5f, 0.0f,  // top right
+         0.5f, -0.5f, 0.0f,  // bottom right
+        -0.5f,  0.5f, 0.0f,  // top left 
+        // second triangle
+         0.5f, -0.5f, 0.0f,  // bottom right
+        -0.5f, -0.5f, 0.0f,  // bottom left
+        -0.5f,  0.5f, 0.0f   // top left
+    };
+
+    float verticses[] = {
+        0.5f, -0.5f, 0.0f,  // bottom right
+        -0.5f, -0.5f, 0.0f,  // bottom left
+        -0.5f,  0.5f, 0.0f   // top left
+    };
+
+#pragma region Vertex
 
     //A vertex buffer object (VBO) stores all vertex information that will be sent to the graphics card.
-    unsigned int VBO;
+    //A vertex array object stores:
+    //Calls to glEnableVertexAttribArray or glDisableVertexAttribArray.
+    //Vertex attribute configurations via glVertexAttribPointer.
+    //Vertex buffer objects associated with vertex attributes by calls to glVertexAttribPointer.
+    unsigned int VBO, VAO;
     //The buffer has a unique id. So we generate one with a buffer id.
     glGenBuffers(1, &VBO);
+    glGenVertexArrays(1, &VAO);
     //Bind the newly created buffer to the GL_ARRAY_BUFFER
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    //Bind the VAO as an vertex array
+    glBindVertexArray(VAO);
     //From here every calls to the GL_ARRAY_BUFFER target will be used to configure the currently bound buffer (in this case VBO)
     
     //Copy vertex data into the buffers memory
@@ -161,15 +197,37 @@ int main() {
     //Next OpenGl has to understand how it should interpret the vertex data in memory and how it should connect the vertex data to the vertex shader's attributes.
 
     //Linking Vertex Attributes
+    //The position data is stored as 32-bit (4 byte) floating point values.
+    //Each position is composed of 3 of those values.
+    //There is no space(or other values) between each set of 3 values.The values are tightly packed in the array.
+    //The first value in the data is at the beginning of the buffer.
 
-    //Thise runs while the window has not gotten the instructions to close
+    //Tell openGl how it should interpret the vertex data (per vertex attribute)
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); 
+    //Stride: the space between consecutive vertex attributes.
+    //Since the next set of position data is located exactly 3 times the size of a float away we specify that value as the stride.
+
+    //Enable the vertex attribute array
+    glEnableVertexAttribArray(0);
+
+
+    int verticesLength = sizeof(vertices) / sizeof(*vertices);
+    int numbVertices = (verticesLength / 3);
+    std::cout << verticesLength/3 << std::endl;
+
+    //This runs while the window has not gotten the instructions to close
     while (!glfwWindowShouldClose(window)) {
         //Input
         processInput(window);
 
         //Render
-        glClearColor(255, 0, 0, 1);
+        glClearColor(0, 0, 0, 1);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glUseProgram(shaderProgram);
+        glBindVertexArray(VAO);
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glDrawArrays(GL_TRIANGLES, 0, numbVertices);
 
         //Swap buffers and poll IO events   
         glfwSwapBuffers(window);

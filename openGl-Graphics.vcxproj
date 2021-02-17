@@ -19,13 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="fileHandler.cpp" />
+    <ClCompile Include="sources\fileHandler.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="sources\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fileHandler.h" />
     <ClInclude Include="include\vec.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\fragmentshader.shader" />
+    <None Include="shaders\vertexshader.shader" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

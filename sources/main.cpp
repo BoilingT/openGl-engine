@@ -9,7 +9,10 @@
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
-
+std::string SHADER_PATH = "shaders\\";
+std::string VERTEX_SHADER_NAME = "vertexshader.shader";
+std::string FRAGMENT_SHADER_NAME = "fragmentshader.shader";
+/*
 const char* vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
 "void main()\n"
@@ -23,6 +26,7 @@ const char* fragmentShaderSource = "#version 330 core\n"
 "{\n"
 "FragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);\n"
 "} \0";
+*/
 
 
 float vertices[] = {
@@ -100,7 +104,7 @@ private:
         //Attach the shader source code to the shader object and compile the shader:
         fileHandler fileHandle;
         std::string fileContent;
-        fileHandle.readFile("shaders\\vertexshader.shader", fileContent);
+        fileHandle.readFile((SHADER_PATH + VERTEX_SHADER_NAME), fileContent);
         std::cout << fileContent << std::endl;
         const char* vertexShaderSource = fileContent.c_str();
 
@@ -124,7 +128,7 @@ private:
         fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
         //Attach the shader source code to the shader object and compile the shader:
-        fileHandle.readFile("shaders\\fragmentshader.shader", fileContent);
+        fileHandle.readFile(((SHADER_PATH + FRAGMENT_SHADER_NAME)), fileContent);
         std::cout << fileContent << std::endl;
         const char* fragmentShaderSource = fileContent.c_str();
 
@@ -206,15 +210,15 @@ private:
 
     void mainloop() {
         //The GPU has now the vertex data and the instructions on how it should process the vertex data within a vertex and fragment shader.
-    //Next OpenGl has to understand how it should interpret the vertex data in memory and how it should connect the vertex data to the vertex shader's attributes.
+        //Next OpenGl has to understand how it should interpret the vertex data in memory and how it should connect the vertex data to the vertex shader's attributes.
 
-    //Linking Vertex Attributes
-    //The position data is stored as 32-bit (4 byte) floating point values.
-    //Each position is composed of 3 of those values.
-    //There is no space(or other values) between each set of 3 values.The values are tightly packed in the array.
-    //The first value in the data is at the beginning of the buffer.
+        //Linking Vertex Attributes
+        //The position data is stored as 32-bit (4 byte) floating point values.
+        //Each position is composed of 3 of those values.
+        //There is no space(or other values) between each set of 3 values.The values are tightly packed in the array.
+        //The first value in the data is at the beginning of the buffer.
 
-    //Tell openGl how it should interpret the vertex data (per vertex attribute)
+        //Tell openGl how it should interpret the vertex data (per vertex attribute)
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
         //Stride: the space between consecutive vertex attributes.
         //Since the next set of position data is located exactly 3 times the size of a float away we specify that value as the stride.
@@ -272,20 +276,6 @@ private:
 
 int main() {
 
-    /*
-    float vertices[] = {
-        // first triangle
-            0.5f,  0.5f, 0.0f,  // top right
-            0.5f, -0.5f, 0.0f,  // bottom right
-        -0.5f,  0.5f, 0.0f,  // top left 
-        // second triangle
-            0.5f, -0.5f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f,  // bottom left
-        -0.5f,  0.5f, 0.0f   // top left
-    };
-    */
-
-    //Rectangle (unique vertices)
     mainProgram app;
 
     app.run();
@@ -295,5 +285,5 @@ int main() {
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    glViewport(0, 0, width, height); //Change the viewport to the desired width and height
+    glViewport(0, 0, width, height); //Change the viewport to the set width and height
 }

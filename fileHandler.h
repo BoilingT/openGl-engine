@@ -19,7 +19,7 @@ public:
 private:
 	std::fstream file;
 
-	bool openFile(std::string fileName);
+	std::fstream openFile(std::string fileName);
 	bool createFile(std::string fileName);
 	void closeFile();
 

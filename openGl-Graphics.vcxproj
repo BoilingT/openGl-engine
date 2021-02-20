@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="sources\fileHandler.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="sources\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fileHandler.h" />
+    <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragmentshader.shader" />

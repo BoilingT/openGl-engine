@@ -1,3 +1,4 @@
-﻿  main.cpp
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(5,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+﻿  Shader.cpp
+C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\Shader.cpp(81,54): warning C4244: 'argument': conversion from 'float' to 'GLint', possible loss of data
+  glad.c
   openGl-Graphics.vcxproj -> C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\x64\Debug\openGl-Graphics.exe

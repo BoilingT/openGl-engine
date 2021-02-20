@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="sources\Shader.cpp" />
     <ClCompile Include="sources\fileHandler.cpp" />
-    <ClCompile Include="glad.c" />
+    <ClCompile Include="sources\glad.c" />
     <ClCompile Include="sources\main.cpp" />
   </ItemGroup>
   <ItemGroup>

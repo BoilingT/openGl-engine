@@ -1,6 +1,3 @@
 ﻿  main.cpp
-C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\include\vec.h(3,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\include\vec.h(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\include\vec.h(5,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\sources\main.cpp(6,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  openGl-Graphics.vcxproj -> C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\x64\Debug\openGl-Graphics.exe
+C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(5,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  openGl-Graphics.vcxproj -> C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\x64\Debug\openGl-Graphics.exe

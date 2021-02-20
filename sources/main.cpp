@@ -1,7 +1,6 @@
 #include <GLFW/glfw3.h>
 
 #include <glad/glad.h> 
-#include <vec.h>
 #include <iostream>
 #include "fileHandler.h";
 

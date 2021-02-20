@@ -4,6 +4,11 @@
 #include <iostream>
 #include "fileHandler.h";
 #include "Shader.h"
+#include "matrixMath.h"
+#include "vectorMath.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 //#include <string>
 
@@ -164,6 +169,9 @@ int main() {
 
     Shader myShader(VERTEX_SHADER_PATH.c_str(), FRAGMENT_SHADER_PATH.c_str());
 
+    matrix<3, 1> positionMatrix(new float[3][1]{
+        {1},{1},{0}
+    });
     //This runs while the window has not gotten the instructions to close
     while (!glfwWindowShouldClose(window)) {
         //Input
@@ -172,13 +180,41 @@ int main() {
         //Render
         glClearColor(0, 0, 0, 1);
         glClear(GL_COLOR_BUFFER_BIT);
+        
+        float timeValue = glfwGetTime() * 1;
+        /*matrix<3, 3> zrotationMatrix(new float[3][3]{
+            {cosf(timeValue), -sinf(timeValue), 0},
+            {sinf(timeValue), cosf(timeValue), 0},
+            {0, 0, 1}
+        });
+        
+        matrix<3, 3> yrotationMatrix(new float[3][3]{
+            {cosf(timeValue), 0.0f, sinf(timeValue)},
+            {0, 1, 0},
+            {-sinf(timeValue), 0, cosf(timeValue)}
+        });
+        
+        matrix<3, 3> xrotationMatrix(new float[3][3]{
+            {1, 0, 0},
+            {0, cosf(timeValue), -sinf(timeValue)},
+            {0, sinf(timeValue), cosf(timeValue)}
+        });
 
-        /* float timeValue = glfwGetTime()*5;
+        auto res = zrotationMatrix.mult<3, 1>(positionMatrix).scale(sin(timeValue));
+        std::cout << "x: " << res.values[0][0] << " y: " << res.values[1][0] << " z: " << 0 << std::endl;
+        */
+        /* 
         float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
         int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor"); //Getting the uniform variable "ourColor".*/
 
+        //glUniform3f(glGetUniformLocation(myShader.ID, "transform"), res.values[0][0], res.values[1][0], 0.0f);
+        glm::mat4 trans = glm::mat4(1.0f);
+        trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+        trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+
+        unsigned int transformLoc = glGetUniformLocation(myShader.ID, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
         myShader.use();
-        //glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
 
         glBindVertexArray(VAO);

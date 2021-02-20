@@ -31,12 +31,21 @@
     <ClCompile Include="sources\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sources\vectorMath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fileHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vectorMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="matrixMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -29,10 +29,10 @@ const char* fragmentShaderSource = "#version 330 core\n"
 
 
 float vertices[] = {
-    0.5f,  0.5f, 0.0f,  // top right
-    0.5f, -0.5f, 0.0f,  // bottom right
-    -0.5f, -0.5f, 0.0f,  // bottom left
-    -0.5f,  0.5f, 0.0f   // top left 
+    // positions         // colors
+         0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+        -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+         0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
 };
 
 
@@ -218,12 +218,17 @@ private:
         //The first value in the data is at the beginning of the buffer.
 
         //Tell openGl how it should interpret the vertex data (per vertex attribute)
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+        //Position attribute
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
         //Stride: the space between consecutive vertex attributes.
         //Since the next set of position data is located exactly 3 times the size of a float away we specify that value as the stride.
 
         //Enable the vertex attribute array
         glEnableVertexAttribArray(0);
+
+        //Color attribute
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
 
 
         int verticesLength = sizeof(vertices) / sizeof(*vertices);
@@ -239,12 +244,19 @@ private:
             glClearColor(0, 0, 0, 1);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            glUseProgram(shaderProgram);
-            glBindVertexArray(VAO);
-            //glDrawArrays(GL_TRIANGLES, 0, numbVertices);
+           /* float timeValue = glfwGetTime()*5;
+            float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+            int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor"); //Getting the uniform variable "ourColor".*/
 
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glUseProgram(shaderProgram);
+            //glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+
+
+            glBindVertexArray(VAO);
+            glDrawArrays(GL_TRIANGLES, 0, numbVertices);
+
+            //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+            //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
             //Swap buffers and poll IO events   
             glfwSwapBuffers(window);

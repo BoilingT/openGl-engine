@@ -2,15 +2,18 @@
 
 #include <glad/glad.h> 
 #include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+//#include <string>
+
 #include "fileHandler.h";
 #include "Shader.h"
 #include "matrixMath.h"
 #include "vectorMath.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-//#include <string>
+#include "window.h"
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
@@ -34,9 +37,10 @@ const char* fragmentShaderSource = "#version 330 core\n"
 
 float vertices[] = {
     // positions         // colors
-         0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-         0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
+     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,  // top right
+     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,  // bottom right
+    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f, // bottom left
+    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f, // top left 
 };
 
 
@@ -66,20 +70,13 @@ void processInput(GLFWwindow* window)
 }
 
 int main() {
-
     //Initialize opengl so that the functions can be used
     glfwInit();
-    //Set the configuration of the window
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
     //Create the window
-    GLFWwindow* window;
+    Window windowHandler(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL-Graphics", NULL, NULL);
+    GLFWwindow* window = windowHandler.window;
 
-    window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL-Graphics", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -88,7 +85,7 @@ int main() {
     }
 
     //Make the context currently as window
-    glfwMakeContextCurrent(window);
+    windowHandler.makeCurrent();
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -117,7 +114,7 @@ int main() {
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     //Bind the VAO as an vertex array
     glBindVertexArray(VAO);
-    //Bind the EBO to the GL_ELEMENT_ARRAU_BUFFER
+    //Bind the EBO to the GL_ELEMENT_ARRAY_BUFFER
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     //Copy indices data into the buffers memory
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_DYNAMIC_DRAW);
@@ -182,46 +179,15 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
         
         float timeValue = glfwGetTime() * 1;
-        /*matrix<3, 3> zrotationMatrix(new float[3][3]{
-            {cosf(timeValue), -sinf(timeValue), 0},
-            {sinf(timeValue), cosf(timeValue), 0},
-            {0, 0, 1}
-        });
-        
-        matrix<3, 3> yrotationMatrix(new float[3][3]{
-            {cosf(timeValue), 0.0f, sinf(timeValue)},
-            {0, 1, 0},
-            {-sinf(timeValue), 0, cosf(timeValue)}
-        });
-        
-        matrix<3, 3> xrotationMatrix(new float[3][3]{
-            {1, 0, 0},
-            {0, cosf(timeValue), -sinf(timeValue)},
-            {0, sinf(timeValue), cosf(timeValue)}
-        });
 
-        auto res = zrotationMatrix.mult<3, 1>(positionMatrix).scale(sin(timeValue));
-        std::cout << "x: " << res.values[0][0] << " y: " << res.values[1][0] << " z: " << 0 << std::endl;
-        */
-        /* 
-        float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-        int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor"); //Getting the uniform variable "ourColor".*/
-
-        //glUniform3f(glGetUniformLocation(myShader.ID, "transform"), res.values[0][0], res.values[1][0], 0.0f);
-        glm::mat4 trans = glm::mat4(1.0f);
-        trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-        trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
-
-        unsigned int transformLoc = glGetUniformLocation(myShader.ID, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+        //Use the shaders
         myShader.use();
 
-
+        //Bind the vertex array object so that it can be used
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, numbVertices);
+        //glDrawArrays(GL_TRIANGLES, 0, numbVertices);
 
-        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         //Swap buffers and poll IO events   
         glfwSwapBuffers(window);

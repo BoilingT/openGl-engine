@@ -26,6 +26,7 @@
     <ClCompile Include="sources\vectorMath.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="chronoTime.h" />
     <ClInclude Include="fileHandler.h" />
     <ClInclude Include="matrixMath.h" />
     <ClInclude Include="Shader.h" />

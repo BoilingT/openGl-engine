@@ -5,9 +5,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-//#include <string>
+#include <string>
 
 #include "fileHandler.h";
 #include "Shader.h"
@@ -36,11 +37,11 @@ const char* fragmentShaderSource = "#version 330 core\n"
 */
 
 float vertices[] = {
-    // positions         // colors
-     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,  // top right
-     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,  // bottom right
-    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f, // bottom left
-    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f, // top left 
+    // positions          // colors           // texture coords
+     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
 };
 
 
@@ -111,7 +112,9 @@ int main() {
     glGenBuffers(1, &EBO);
     glGenVertexArrays(1, &VAO);
     //Bind the newly created vertex buffer object to the GL_ARRAY_BUFFER
+    //Copy vertex data into the buffers memory
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
     //Bind the VAO as an vertex array
     glBindVertexArray(VAO);
     //Bind the EBO to the GL_ELEMENT_ARRAY_BUFFER
@@ -120,8 +123,6 @@ int main() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_DYNAMIC_DRAW);
     //From here every calls to the GL_ARRAY_BUFFER target will be used to configure the currently bound buffer (in this case VBO)
 
-    //Copy vertex data into the buffers memory
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 
     //GL_STREAM_DRAW: the data is set only once and used by the GPU at most a few times.
     //GL_STATIC_DRAW: the data is set only once and used many times.
@@ -148,7 +149,7 @@ int main() {
 
     //Tell openGl how it should interpret the vertex data (per vertex attribute)
     //Position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     //Stride: the space between consecutive vertex attributes.
     //Since the next set of position data is located exactly 3 times the size of a float away we specify that value as the stride.
 
@@ -156,9 +157,11 @@ int main() {
     glEnableVertexAttribArray(0);
 
     //Color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
 
     int verticesLength = sizeof(vertices) / sizeof(*vertices);
     int numbVertices = (verticesLength / 3);
@@ -169,6 +172,41 @@ int main() {
     matrix<3, 1> positionMatrix(new float[3][1]{
         {1},{1},{0}
     });
+
+#pragma region texture
+
+    unsigned int texture;
+    glGenTextures(1, &texture);
+    //Bind the texture
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    // set the texture wrapping/filtering options (on the currently bound texture object)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    //Loading the image
+    int ImageWidth, ImageHeight, ImageNrChannels;
+    unsigned char* imgData = stbi_load("textures/wall.jpg", &ImageWidth, &ImageHeight, &ImageNrChannels, 0);
+
+    //Generate texture
+    if (imgData)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ImageWidth, ImageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, imgData);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+
+    //Free the memory
+    stbi_image_free(imgData);
+
+#pragma endregion
+
+
     //This runs while the window has not gotten the instructions to close
     while (!glfwWindowShouldClose(window)) {
         //Input
@@ -180,13 +218,12 @@ int main() {
         
         float timeValue = glfwGetTime() * 1;
 
-        //Use the shaders
+        glBindTexture(GL_TEXTURE_2D, texture);
+        
         myShader.use();
 
-        //Bind the vertex array object so that it can be used
         glBindVertexArray(VAO);
         //glDrawArrays(GL_TRIANGLES, 0, numbVertices);
-
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         //Swap buffers and poll IO events   

@@ -43,16 +43,16 @@
     <ClInclude Include="fileHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vectorMath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="matrixMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vectorMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="window.h">
@@ -69,6 +69,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\wall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\awesomeface.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

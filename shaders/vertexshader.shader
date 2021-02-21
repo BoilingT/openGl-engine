@@ -7,7 +7,7 @@ out vec3 ourColor;
 out vec2 TexCoord;
 
 //uniform vec3 transform;
-uniform mat4 transform;
+//uniform mat4 transform;
 
 void main()
 {

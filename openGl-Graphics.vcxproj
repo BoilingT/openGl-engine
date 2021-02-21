@@ -38,6 +38,7 @@
     <None Include="shaders\vertexshader.shader" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="textures\awesomeface.png" />
     <Image Include="textures\wall.jpg" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

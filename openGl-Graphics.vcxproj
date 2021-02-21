@@ -29,11 +29,16 @@
     <ClInclude Include="fileHandler.h" />
     <ClInclude Include="matrixMath.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="stb_image.h" />
     <ClInclude Include="vectorMath.h" />
+    <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragmentshader.shader" />
     <None Include="shaders\vertexshader.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="textures\wall.jpg" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

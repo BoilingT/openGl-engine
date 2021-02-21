@@ -17,6 +17,10 @@
       <UniqueIdentifier>{6324b5c9-5fa7-4540-882a-a69dca2f72f2}</UniqueIdentifier>
       <Extensions>shader;vs;fs;</Extensions>
     </Filter>
+    <Filter Include="textures">
+      <UniqueIdentifier>{035795e1-5348-4394-8b7e-86882d31524b}</UniqueIdentifier>
+      <Extensions>jpeg;png;jpg;img</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\main.cpp">
@@ -48,6 +52,12 @@
     <ClInclude Include="matrixMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragmentshader.shader">
@@ -56,5 +66,10 @@
     <None Include="shaders\vertexshader.shader">
       <Filter>Shaders</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="textures\wall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

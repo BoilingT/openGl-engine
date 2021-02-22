@@ -7,11 +7,11 @@ out vec3 ourColor;
 out vec2 TexCoord;
 
 //uniform vec3 transform;
-//uniform mat4 transform;
+uniform mat4 transform;
 
 void main()
 {
-   gl_Position = vec4(aPos, 1.0f);
+   gl_Position = transform * vec4(aPos, 1.0f);
    ourColor = aColor; // set ourColor to the input color we got from the vertex data
    TexCoord = aTexCoord;
 };

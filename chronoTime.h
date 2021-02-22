@@ -3,18 +3,24 @@
 
 class chronoTime
 {
-private:
+public:
 	std::chrono::steady_clock::time_point startTime;
 	std::chrono::steady_clock::time_point endTime;
 
-public:
-
-	void start() {
+	void setTimeStart() {
 		startTime = std::chrono::steady_clock::now();
 	}
 
-	void end() {
+	void setTimeStart(std::chrono::steady_clock::time_point time) {
+		startTime = time;
+	}
+
+	void setTimeEnd() {
 		endTime = std::chrono::steady_clock::now();
+	}
+
+	void setTimeEnd(std::chrono::steady_clock::time_point time) {
+		endTime = time;
 	}
 
 	double deltaTime() {

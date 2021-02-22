@@ -9,15 +9,21 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include <string>
+#include <time.h>
+#include <Windows.h>
 
 #include "fileHandler.h";
 #include "Shader.h"
 #include "matrixMath.h"
 #include "vectorMath.h"
 #include "window.h"
+#include "chronoTime.h"
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
+const char* WINDOW_TITLE = "OpenGL-Graphics";
+const float FRAMES_PER_SECOND_CAP = 144.f;
+
 std::string VERTEX_SHADER_PATH = "shaders/vertexshader.shader";
 std::string FRAGMENT_SHADER_PATH = "shaders/fragmentshader.shader";
 /*
@@ -70,12 +76,17 @@ void processInput(GLFWwindow* window)
         glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 }
 
+double initial_time = time(NULL), final_time, frame_count;
+chronoTime fpsTimeHandler;
+void setFPS(GLFWwindow* window, int fps);
+
 int main() {
+
     //Initialize opengl so that the functions can be used
     glfwInit();
 
     //Create the window
-    Window windowHandler(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL-Graphics", NULL, NULL);
+    Window windowHandler(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE, NULL, NULL);
     GLFWwindow* window = windowHandler.window;
 
     if (window == NULL)
@@ -175,10 +186,9 @@ int main() {
 
 #pragma region texture
 
-    unsigned int texture;
-    glGenTextures(1, &texture);
-    //Bind the texture
-    glBindTexture(GL_TEXTURE_2D, texture);
+    unsigned int texture1, texture2;
+    glGenTextures(1, &texture1);
+    glBindTexture(GL_TEXTURE_2D, texture1);
 
     // set the texture wrapping/filtering options (on the currently bound texture object)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -187,6 +197,7 @@ int main() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     //Loading the image
+    stbi_set_flip_vertically_on_load(true);
     int ImageWidth, ImageHeight, ImageNrChannels;
     unsigned char* imgData = stbi_load("textures/wall.jpg", &ImageWidth, &ImageHeight, &ImageNrChannels, 0);
 
@@ -201,40 +212,100 @@ int main() {
         std::cout << "Failed to load texture" << std::endl;
     }
 
+    stbi_image_free(imgData);
+
+    glGenTextures(1, &texture2);
+    glBindTexture(GL_TEXTURE_2D, texture2);
+
+    // set the texture wrapping/filtering options (on the currently bound texture object)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    //Load the second image
+    //stbi_set_flip_vertically_on_load(true);
+    imgData = stbi_load("textures/awesomeface.png", &ImageWidth, &ImageHeight, &ImageNrChannels, 0);
+    if (imgData)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ImageWidth, ImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, imgData);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+
     //Free the memory
     stbi_image_free(imgData);
 
 #pragma endregion
 
 
+    //Set the shader program to use
+    myShader.use();
+    //Setting uniforms
+    glUniform1i(glGetUniformLocation(myShader.ID, "texture1"), 0);
+    //glUniform1i(glGetUniformLocation(myShader.ID, "texture2"), 1);
+    myShader.setInt("texture2", 1);
+
+    fpsTimeHandler.setTimeStart();
     //This runs while the window has not gotten the instructions to close
     while (!glfwWindowShouldClose(window)) {
         //Input
         processInput(window);
-
+        
         //Render
         glClearColor(0, 0, 0, 1);
         glClear(GL_COLOR_BUFFER_BIT);
-        
-        float timeValue = glfwGetTime() * 1;
 
-        glBindTexture(GL_TEXTURE_2D, texture);
-        
+        //Bind and activate the textures
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture1);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texture2);
+
+
         myShader.use();
-
         glBindVertexArray(VAO);
         //glDrawArrays(GL_TRIANGLES, 0, numbVertices);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-        //Swap buffers and poll IO events   
+        //Swap buffers and poll IO events
         glfwSwapBuffers(window);
         glfwPollEvents();
+        
+        //Calculating and limiting fps
+        frame_count++;
+        final_time = time(NULL);
+        fpsTimeHandler.setTimeEnd();
+        double deltaTime = fpsTimeHandler.deltaTime() / 1000000;
+        Sleep(1000/(FRAMES_PER_SECOND_CAP) - deltaTime);
+        //double deltaTime = final_time - initial_time;
+        if (deltaTime > 0)
+        {
+            //Set framerate
+            int fps = frame_count / deltaTime;
+            //fps = frames drawn / time taken in seconds
+            if (frame_count >= 100)
+            {
+                setFPS(window, fps);
+                //cout << "FPS: " << fps << " Frames: " << frame_count << " Deltatime: " << deltaTime << endl;
+                frame_count = 0;
+                fpsTimeHandler.setTimeStart(fpsTimeHandler.endTime);
+            }
+        }
     }
 
     glfwTerminate();
 
     system("pause");
     return 0;
+}
+
+void setFPS(GLFWwindow* window, int fps) {
+    string title = (string)WINDOW_TITLE + "   -   " + to_string(fps) + " FPS";
+    glfwSetWindowTitle(window, title.c_str());
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {

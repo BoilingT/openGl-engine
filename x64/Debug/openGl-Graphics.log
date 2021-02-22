@@ -1,3 +1,1 @@
-﻿  LINK : C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\x64\Debug\openGl-Graphics.exe not found or not built by the last incremental link; performing full link
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  openGl-Graphics.vcxproj -> C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\x64\Debug\openGl-Graphics.exe
+﻿  openGl-Graphics.vcxproj -> C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\x64\Debug\openGl-Graphics.exe

@@ -22,7 +22,7 @@
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 const char* WINDOW_TITLE = "OpenGL-Graphics";
-const float FRAMES_PER_SECOND_CAP = 144.f;
+float FRAMES_PER_SECOND_CAP = 144.f;
 float angle = 0;
 
 std::string VERTEX_SHADER_PATH = "shaders/vertexshader.shader";
@@ -89,6 +89,11 @@ chronoTime fpsTimeHandler;
 void setFPS(GLFWwindow* window, int fps);
 
 int main() {
+
+    fileHandler file;
+    string fileContent;
+    file.readFile("options.txt", fileContent);
+    FRAMES_PER_SECOND_CAP = stof(fileContent);
 
     //Initialize opengl so that the functions can be used
     glfwInit();

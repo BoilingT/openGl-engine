@@ -35,6 +35,7 @@
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="options.txt" />
     <None Include="shaders\fragmentshader.shader" />
     <None Include="shaders\vertexshader.shader" />
   </ItemGroup>

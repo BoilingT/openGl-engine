@@ -69,6 +69,7 @@
     <None Include="shaders\vertexshader.shader">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="options.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\wall.jpg">

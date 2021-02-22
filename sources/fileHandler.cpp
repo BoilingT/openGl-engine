@@ -1,13 +1,8 @@
 #include "fileHandler.h"
 
-bool fileHandler::openFile(std::string fileName) {
-	file.open(fileName);
-	if (file.is_open())
-	{
-		return true;
-	}
-
-	return false;
+std::fstream fileHandler::openFile(std::string fileName) {
+	std::fstream openedFile(fileName);
+	return openedFile;
 }
 
 bool fileHandler::createFile(std::string fileName) {
@@ -44,7 +39,7 @@ bool fileHandler::readFile(std::string fileName, std::string & content) {
 		//Variable for containing a single line of the file
 		std::string line;
 
-		file = std::fstream(fileName);
+		std::fstream file(fileName);
 
 		//Reading the file
 		while (std::getline(file, line))
@@ -64,17 +59,20 @@ bool fileHandler::readFile(std::string fileName, std::string & content) {
 
 bool fileHandler::writeFile(std::string fileName, std::string content) {
 	//Open and create the file
-	if (fileHandler::openFile(fileName)) {
+	std::fstream fileToBeWrittenTo = fileHandler::openFile(fileName);
+	if (fileToBeWrittenTo.is_open()) {
 		//Write to the file
-		file << content;
+		fileToBeWrittenTo << content;
+		fileToBeWrittenTo.close();
 		return true;
 	}
 	else
 	{
 		fileHandler::createFile(fileName);
-		file = std::fstream(fileName);
+		fileToBeWrittenTo = std::fstream(fileName);
 
-		file << content;
+		fileToBeWrittenTo << content;
+		fileToBeWrittenTo.close();
 		return true;
 	}
 

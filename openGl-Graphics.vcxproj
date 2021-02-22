@@ -19,16 +19,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="sources\Shader.cpp" />
     <ClCompile Include="sources\fileHandler.cpp" />
-    <ClCompile Include="glad.c" />
+    <ClCompile Include="sources\glad.c" />
     <ClCompile Include="sources\main.cpp" />
+    <ClCompile Include="sources\vectorMath.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="chronoTime.h" />
     <ClInclude Include="fileHandler.h" />
+    <ClInclude Include="matrixMath.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="vectorMath.h" />
+    <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragmentshader.shader" />
     <None Include="shaders\vertexshader.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="textures\awesomeface.png" />
+    <Image Include="textures\wall.jpg" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

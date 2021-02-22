@@ -1,15 +1,1 @@
-﻿  main.cpp
-D:\Windows Kits\10\Include\10.0.18362.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\include\GLFW\glfw3.h(123): message : see previous definition of 'APIENTRY'
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(15,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\chronoTime.h(27,90): warning C4244: 'return': conversion from '_Rep' to 'double', possible loss of data
-          with
-          [
-              _Rep=__int64
-          ]
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(87,21): warning C4244: 'initializing': conversion from 'time_t' to 'double', possible loss of data
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(286,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(340,26): warning C4244: '=': conversion from 'time_t' to 'double', possible loss of data
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(343,44): warning C4244: 'argument': conversion from 'double' to 'DWORD', possible loss of data
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(348,21): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-  openGl-Graphics.vcxproj -> C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\x64\Debug\openGl-Graphics.exe
+﻿  openGl-Graphics.vcxproj -> C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\x64\Debug\openGl-Graphics.exe

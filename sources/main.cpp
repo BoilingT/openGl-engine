@@ -94,7 +94,15 @@ int main() {
     string fileContent;
     if (file.readFile("options.txt", fileContent))
     {
-        FRAMES_PER_SECOND_CAP = stof(fileContent);
+        try
+        {
+            FRAMES_PER_SECOND_CAP = stof(fileContent);
+        }
+        catch (const std::exception&)
+        {
+            cout << "Could not find settings file" << endl;
+            file.writeFile("options.txt", to_string(FRAMES_PER_SECOND_CAP));
+        }
     }
 
     //Initialize opengl so that the functions can be used
@@ -191,7 +199,7 @@ int main() {
 
     int verticesLength = sizeof(vertices) / sizeof(*vertices);
     int numbVertices = (verticesLength / 3);
-    std::cout << verticesLength / 3 << std::endl;
+    //std::cout << verticesLength / 3 << std::endl;
 
     Shader myShader(VERTEX_SHADER_PATH.c_str(), FRAGMENT_SHADER_PATH.c_str());
 

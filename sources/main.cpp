@@ -92,8 +92,10 @@ int main() {
 
     fileHandler file;
     string fileContent;
-    file.readFile("options.txt", fileContent);
-    FRAMES_PER_SECOND_CAP = stof(fileContent);
+    if (file.readFile("options.txt", fileContent))
+    {
+        FRAMES_PER_SECOND_CAP = stof(fileContent);
+    }
 
     //Initialize opengl so that the functions can be used
     glfwInit();

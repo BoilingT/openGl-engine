@@ -23,6 +23,7 @@ const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 const char* WINDOW_TITLE = "OpenGL-Graphics";
 const float FRAMES_PER_SECOND_CAP = 144.f;
+float angle = 0;
 
 std::string VERTEX_SHADER_PATH = "shaders/vertexshader.shader";
 std::string FRAGMENT_SHADER_PATH = "shaders/fragmentshader.shader";
@@ -67,6 +68,13 @@ void processInput(GLFWwindow* window)
         //Instruct the window to close
         glfwSetWindowShouldClose(window, true);
 
+    if (glfwGetKey(window, GLFW_KEY_D)) {
+        angle += 0.01f;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_A)) {
+        angle -= 0.01f;
+    }
 
     if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -251,20 +259,65 @@ int main() {
 
     fpsTimeHandler.setTimeStart();
     //This runs while the window has not gotten the instructions to close
+    matrix<4, 4> transformMatrixz;
+
     while (!glfwWindowShouldClose(window)) {
         //Input
         processInput(window);
-        
+
         //Render
         glClearColor(0, 0, 0, 1);
         glClear(GL_COLOR_BUFFER_BIT);
-
+      
         //Bind and activate the textures
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
 
+        //Process
+        float timeValue = glfwGetTime();
+        glm::mat4 trans = glm::mat4(1.0f);
+
+        float transformmatrixvalues[4][4] = {
+            {cosf(timeValue), -sinf(timeValue), 0, 0},
+            {sinf(timeValue), cosf(timeValue), 0, 0},
+            {0, 0, 1, 0},
+            {0, 0, 0, 1}
+        };
+        transformMatrixz.set<4,4>(transformmatrixvalues);
+
+        /*float transformMatrixy[4][4]{
+            {cosf(timeValue), sinf(timeValue), 0, 0},
+            {sinf(timeValue), -cosf(timeValue), 0, 0},
+            {0, 0, 1, 0},
+            {0, 0, 0, 1}
+        };*/
+
+        /*matrix<4,4> transformMatrixx(new float[4][4]{
+            {1, 0, 0, 0},
+            {0, cosf(timeValue), -sinf(timeValue), 0},
+            {0, sinf(timeValue), cosf(timeValue), 0},
+            {0, 0, 0, 1}
+        });*/
+
+        float transformMatrixxnew[4][4]{
+            {1, 0, 0, 0},
+            {0, cosf(timeValue), -sinf(timeValue), 0},
+            {0, sinf(timeValue), cosf(timeValue), 0},
+            {0, 0, 0, 1}
+        };
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                trans[i][j] = transformMatrixz.values[i][j];
+            }
+        }
+        //delete &transformMatrixz;
+        unsigned int transformLocation = glGetUniformLocation(myShader.ID, "transform");
+        glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(trans));
 
         myShader.use();
         glBindVertexArray(VAO);

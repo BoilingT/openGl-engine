@@ -274,7 +274,7 @@ int main() {
 
     fpsTimeHandler.setTimeStart();
     //This runs while the window has not gotten the instructions to close
-    matrix<4, 4> transformMatrixz;
+    matrix<4, 4> scaleMatrix;
 
     while (!glfwWindowShouldClose(window)) {
         //Input
@@ -294,40 +294,40 @@ int main() {
         float timeValue = glfwGetTime();
         glm::mat4 trans = glm::mat4(1.0f);
 
-        float transformmatrixvalues[4][4] = {
+        float transformmatrixz[4][4] = {
             {cosf(timeValue), -sinf(timeValue), 0, 0},
             {sinf(timeValue), cosf(timeValue), 0, 0},
             {0, 0, 1, 0},
             {0, 0, 0, 1}
         };
-        transformMatrixz.set<4,4>(transformmatrixvalues);
 
-        /*float transformMatrixy[4][4]{
-            {cosf(timeValue), sinf(timeValue), 0, 0},
-            {sinf(timeValue), -cosf(timeValue), 0, 0},
-            {0, 0, 1, 0},
+        float transformMatrixy[4][4]{
+            {cosf(timeValue), 0, sinf(timeValue), 0},
+            {0, 1, 0, 0},
+            {-sinf(timeValue), 0, cos(timeValue), 0},
             {0, 0, 0, 1}
-        };*/
+        };
 
-        /*matrix<4,4> transformMatrixx(new float[4][4]{
-            {1, 0, 0, 0},
-            {0, cosf(timeValue), -sinf(timeValue), 0},
-            {0, sinf(timeValue), cosf(timeValue), 0},
-            {0, 0, 0, 1}
-        });*/
-
-        float transformMatrixxnew[4][4]{
+        float transformMatrixx[4][4]{
             {1, 0, 0, 0},
             {0, cosf(timeValue), -sinf(timeValue), 0},
             {0, sinf(timeValue), cosf(timeValue), 0},
             {0, 0, 0, 1}
         };
 
+        float scaleTransform[4][4]{
+            {1, 0, 0, 2},
+            {0, 1, 0, 0},
+            {0, 0, 1, 0},
+            {0, 0, 0, 1}
+        };
+
+        cout << scaleMatrix.set<4,4>(scaleTransform).toString() << endl;
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                trans[i][j] = transformMatrixz.values[i][j];
+                trans[i][j] = scaleMatrix.values[i][j];
             }
         }
         //delete &transformMatrixz;

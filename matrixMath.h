@@ -59,6 +59,7 @@ public:
 
 	~matrix()
 	{
+
 		//delete[] Matrix;
 	}
 

@@ -9,15 +9,16 @@ template <unsigned int rows, unsigned int columns>
 class matrix {
 
 private:
-	template <typename T>
-	T** createMatrix(int m, int n) {
+	float** Matrix = nullptr;
 
-		T** Matrix = 0;
-		Matrix = new T* [m];
+	float** createMatrix(int m, int n) {
+
+		Matrix = 0;
+		Matrix = new float* [m];
 
 		for (int i = 0; i < m; i++)
 		{
-			Matrix[i] = new T[n];
+			Matrix[i] = new float[n];
 		}
 
 		for (int i = 0; i < m; i++)
@@ -30,12 +31,12 @@ private:
 
 		return Matrix;
 	}
-	
+
 public:
 
 	int columnCount = 0;
 	int rowCount = 0;
-	float** values = createMatrix<float>(rows, columns);
+	float** values = createMatrix(rows, columns);
 
 	//Create a matrix containing only zeros (0).
 	matrix() {
@@ -46,20 +47,25 @@ public:
 	matrix(float* arr1d) {
 		columnCount = columns;
 		rowCount = rows;
-		set<rows, columns>(arr1d);
+		Set<rows, columns>(arr1d);
 	}
 
 	//Create a matrix with specified data.
 	matrix(float arr2d[rows][columns]) {
 		columnCount = columns;
 		rowCount = rows;
-		set<rows, columns>(arr2d);
+		Set<rows, columns>(arr2d);
+	}
+
+	~matrix()
+	{
+		//delete[] Matrix;
 	}
 
 	//Set new data into the matrix or new data with different dimensions to create a whole new and different matrix.
 	//Takes an 2d array as input.
 	template <int r, int c>
-	matrix set(float arr2d[r][c]) {
+	matrix Set(float arr2d[r][c]) {
 		//cout << "r = " << r << " c = " << c << " rows = " << rows << " cols = " << columns << endl;
 		if (r == rows && c == columns)
 		{
@@ -75,7 +81,7 @@ public:
 		else if (r != rows || c != columns)
 		{
 			values = 0;
-			values = createMatrix<float>(r, c);
+			values = createMatrix(r, c);
 			columnCount = c;
 			rowCount = r;
 			for (int col = 0; col < c; col++)
@@ -92,7 +98,7 @@ public:
 	//Set new data into the matrix or new data with different dimensions to create a whole new and different matrix.
 	//Takes a one dimensional array (like a vector).
 	template <int r, int c>
-	matrix set(float * arr1d) {
+	matrix Set(float * arr1d) {
 		//cout << "r = " << r << " c = " << c << " rows = " << rows << " cols = " << columns << endl;
 		if (r == rows && c == columns)
 		{
@@ -108,7 +114,9 @@ public:
 		else if (r != rows || c != columns)
 		{
 			values = 0;
-			values = createMatrix<float>(r, c);
+			delete [] values;
+			values = createMatrix(r, c);
+			//delete[] Matrix;
 			columnCount = c;
 			rowCount = r;
 			for (int col = 0; col < c; col++)
@@ -240,11 +248,24 @@ public:
 
 	//Multiply two matricies
 	template <int n, int p>
-	auto mult(matrix<n, p> multMatrix) {
+	matrix<rows, p> mult(matrix<n, p> multMatrix) {
 		if (columnCount == n)
 		{
-			float** product = createMatrix<float>(rows, p);
-			
+			//float** product = createMatrix(rows, p);
+			float** tempValuesMatrix = createMatrix(rows, columns);
+
+			for (int i = 0; i < rows; i++)
+			{
+				for (int j = 0; j < columns; j++)
+				{
+					tempValuesMatrix[i][j] = values[i][j]; //Store the values in a temporary variable so that new values can be put in without destroying the real values
+				}
+			}
+
+			values = createMatrix(rows, p); //Assign values to a new matrix so new values can be put in
+
+			columnCount = p;
+			rowCount = rows;
 			//Go through each row of the first matrix
 
 			for (int row = 0; row < rowCount; row++)
@@ -256,33 +277,32 @@ public:
 					{
 						//cout << " Inner: " << inner << "Column: " << column << endl;
 						//cout << "values: " << values[row][inner] << " * " << " multvalues: " << multMatrix.values[inner][column] << endl;
-						product[row][column] += (values[row][inner] * multMatrix.values[inner][column]);
+						values[row][column] += (tempValuesMatrix[row][inner] * multMatrix.values[inner][column]);
 					}
 					//cout << product[row][column] << ", ";
 				}
 				//cout << "\n";
 			}
 			
-			float result[rows][p];
-			values = createMatrix<float>(rows, p);
+			//float result[rows][p];
+			/*matrix<rows, p> res;
+			res.values = createMatrix(rows, p);
 			for (int i = 0; i < rows; i++)
 			{
 				for (int j = 0; j < p; j++)
 				{
-					values[i][j] = product[i][j];
+					res.values[i][j] = product[i][j];
 				}
-			}
-			columnCount = p;
-			rowCount = rows;
+			}*/
 
-			//matrix<rows, p> res(result);
+			delete[] tempValuesMatrix;
+			//delete[] Matrix;
 
 			return *this;
 		}
 		else
 		{
 			cerr << "Error: Can not multiply: column count isn't the same as the other's row count" << endl;
-			matrix<rows, p> null;
 			return *this;
 		}
 	}

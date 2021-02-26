@@ -20,7 +20,7 @@
 #include "chronoTime.h"
 
 const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
+const int SCREEN_HEIGHT = 800;
 const char* WINDOW_TITLE = "OpenGL-Graphics";
 float FRAMES_PER_SECOND_CAP = 144.f;
 float angle = 0;
@@ -274,8 +274,23 @@ int main() {
 
     fpsTimeHandler.setTimeStart();
     //This runs while the window has not gotten the instructions to close
-    matrix<4, 4> scaleMatrix;
+    matrix<4, 4> translationMatrix(new float[4][4]{
+        {1, 0, 0, 1},
+        {0, 1, 0, 0},
+        {0, 0, 1, 0},
+        {0, 0, 0, 1}
+    });
 
+    matrix<4,4> scaleMatrix(new float[4][4]{
+    {1, 0, 0, 0},
+    {0, 1, 0, 0},
+    {0, 0, 1, 0},
+    {0, 0, 0, 1}
+    });
+    translationMatrix.mult<4, 4>(scaleMatrix);
+
+    matrix<4, 4> newTranslationMatrix;
+    matrix<4, 4>* resMatrix;
     while (!glfwWindowShouldClose(window)) {
         //Input
         processInput(window);
@@ -294,12 +309,19 @@ int main() {
         float timeValue = glfwGetTime();
         glm::mat4 trans = glm::mat4(1.0f);
 
-        float transformmatrixz[4][4] = {
+        float rotMatrix[4][4] = {
             {cosf(timeValue), -sinf(timeValue), 0, 0},
             {sinf(timeValue), cosf(timeValue), 0, 0},
             {0, 0, 1, 0},
             {0, 0, 0, 1}
         };
+
+        /*matrix<4,4> rotMatrix(new float[4][4] {
+            {cosf(timeValue), -sinf(timeValue), 0, 0},
+            {sinf(timeValue), cosf(timeValue), 0, 0},
+            {0, 0, 1, 0},
+            {0, 0, 0, 1}
+        });*/
 
         float transformMatrixy[4][4]{
             {cosf(timeValue), 0, sinf(timeValue), 0},
@@ -315,21 +337,27 @@ int main() {
             {0, 0, 0, 1}
         };
 
-        float scaleTransform[4][4]{
-            {1, 0, 0, 2},
-            {0, 1, 0, 0},
-            {0, 0, 1, 0},
-            {0, 0, 0, 1}
+        float m1[4][4] = {
+        {1, 0, 0, 0.2f},
+        {0, 1, 0, 0},
+        {0, 0, 1, 0},
+        {0, 0, 0, 1}
         };
 
-        cout << scaleMatrix.set<4,4>(scaleTransform).toString() << endl;
+        newTranslationMatrix = translationMatrix;
+        newTranslationMatrix.mult<4, 4>(rotMatrix);
+
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                trans[i][j] = scaleMatrix.values[i][j];
+                //transpose
+                trans[i][j] = newTranslationMatrix.values[j][i];
             }
         }
+        //delete transformationResult;
+        //delete[] transformmatrixz2;
+        //cout << newTranslationMatrix.toString() << endl;
         //delete &transformMatrixz;
         unsigned int transformLocation = glGetUniformLocation(myShader.ID, "transform");
         glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(trans));

@@ -9,10 +9,10 @@ template <unsigned int rows, unsigned int columns>
 class matrix {
 
 private:
-	float** Matrix = nullptr;
 
 	float** createMatrix(int m, int n) {
 
+		float** Matrix = nullptr;
 		Matrix = 0;
 		Matrix = new float* [m];
 
@@ -55,12 +55,6 @@ public:
 		columnCount = columns;
 		rowCount = rows;
 		Set<rows, columns>(arr2d);
-	}
-
-	~matrix()
-	{
-
-		//delete[] Matrix;
 	}
 
 	//Set new data into the matrix or new data with different dimensions to create a whole new and different matrix.
@@ -249,11 +243,11 @@ public:
 
 	//Multiply two matricies
 	template <int n, int p>
-	matrix<rows, p> mult(matrix<n, p> multMatrix) {
+	matrix<rows, p>* mult(matrix<n, p> multMatrix) {
 		if (columnCount == n)
 		{
-			//float** product = createMatrix(rows, p);
-			float** tempValuesMatrix = createMatrix(rows, columns);
+			float** product = createMatrix(rows, p);
+			/*float** tempValuesMatrix = createMatrix(rows, columns);
 
 			for (int i = 0; i < rows; i++)
 			{
@@ -263,7 +257,8 @@ public:
 				}
 			}
 
-			values = createMatrix(rows, p); //Assign values to a new matrix so new values can be put in
+			delete[] values;
+			values = createMatrix(rows, p); //Assign values to a new matrix so new values can be put in*/
 
 			columnCount = p;
 			rowCount = rows;
@@ -278,7 +273,7 @@ public:
 					{
 						//cout << " Inner: " << inner << "Column: " << column << endl;
 						//cout << "values: " << values[row][inner] << " * " << " multvalues: " << multMatrix.values[inner][column] << endl;
-						values[row][column] += (tempValuesMatrix[row][inner] * multMatrix.values[inner][column]);
+						product[row][column] += (values[row][inner] * multMatrix.values[inner][column]);
 					}
 					//cout << product[row][column] << ", ";
 				}
@@ -286,25 +281,25 @@ public:
 			}
 			
 			//float result[rows][p];
-			/*matrix<rows, p> res;
-			res.values = createMatrix(rows, p);
+			matrix<rows, p>* res = new matrix<rows, p>();
+			res->values = createMatrix(rows, p);
 			for (int i = 0; i < rows; i++)
 			{
 				for (int j = 0; j < p; j++)
 				{
-					res.values[i][j] = product[i][j];
+					res->values[i][j] = product[i][j];
 				}
-			}*/
+			}
 
-			delete[] tempValuesMatrix;
-			//delete[] Matrix;
+			delete[] product;
 
-			return *this;
+			return res;
 		}
 		else
 		{
+			matrix<rows, p>* res = new matrix<rows, p>();
 			cerr << "Error: Can not multiply: column count isn't the same as the other's row count" << endl;
-			return *this;
+			return res;
 		}
 	}
 };

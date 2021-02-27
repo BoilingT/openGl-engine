@@ -275,8 +275,8 @@ int main() {
     fpsTimeHandler.setTimeStart();
     //This runs while the window has not gotten the instructions to close
     matrix<4, 4> translationMatrix(new float[4][4]{
-        {1, 0, 0, 1},
-        {0, 1, 0, 0},
+        {1, 0, 0, 0.5f},
+        {0, 1, 0, 0.2f},
         {0, 0, 1, 0},
         {0, 0, 0, 1}
     });
@@ -287,10 +287,8 @@ int main() {
     {0, 0, 1, 0},
     {0, 0, 0, 1}
     });
-    translationMatrix.mult<4, 4>(scaleMatrix);
+    matrix<4, 4> newTranslationMatrix = *translationMatrix.mult<4, 4>(scaleMatrix);
 
-    matrix<4, 4> newTranslationMatrix;
-    matrix<4, 4>* resMatrix;
     while (!glfwWindowShouldClose(window)) {
         //Input
         processInput(window);
@@ -344,20 +342,19 @@ int main() {
         {0, 0, 0, 1}
         };
 
-        newTranslationMatrix = translationMatrix;
-        newTranslationMatrix.mult<4, 4>(rotMatrix);
+        matrix<4, 4>* resultTranslationMatrix = newTranslationMatrix.mult<4, 4>(rotMatrix);
 
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
                 //transpose
-                trans[i][j] = newTranslationMatrix.values[j][i];
+                trans[i][j] = resultTranslationMatrix->values[j][i];
             }
         }
-        //delete transformationResult;
+        cout << resultTranslationMatrix->toString() << endl;
+        delete[] resultTranslationMatrix;
         //delete[] transformmatrixz2;
-        //cout << newTranslationMatrix.toString() << endl;
         //delete &transformMatrixz;
         unsigned int transformLocation = glGetUniformLocation(myShader.ID, "transform");
         glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(trans));

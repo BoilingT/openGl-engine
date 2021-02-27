@@ -8,10 +8,8 @@ C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\chronoTime.h(27,90): 
               _Rep=__int64
           ]
 C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(87,21): warning C4244: 'initializing': conversion from 'time_t' to 'double', possible loss of data
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(309,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(376,26): warning C4244: '=': conversion from 'time_t' to 'double', possible loss of data
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(379,44): warning C4244: 'argument': conversion from 'double' to 'DWORD', possible loss of data
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(384,21): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(293,19): warning C4101: 'resMatrix': unreferenced local variable
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(307,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(373,26): warning C4244: '=': conversion from 'time_t' to 'double', possible loss of data
+C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(376,44): warning C4244: 'argument': conversion from 'double' to 'DWORD', possible loss of data
+C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(381,21): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
   openGl-Graphics.vcxproj -> C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\x64\Debug\openGl-Graphics.exe

@@ -9,7 +9,9 @@ C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\chronoTime.h(
           ]
 C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\sources\main.cpp(87,21): warning C4244: 'initializing': conversion from 'time_t' to 'double', possible loss of data
 C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\sources\main.cpp(307,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\sources\main.cpp(373,26): warning C4244: '=': conversion from 'time_t' to 'double', possible loss of data
-C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\sources\main.cpp(376,44): warning C4244: 'argument': conversion from 'double' to 'DWORD', possible loss of data
-C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\sources\main.cpp(381,21): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\sources\main.cpp(375,44): warning C4244: 'argument': conversion from 'double' to 'DWORD', possible loss of data
+C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\sources\main.cpp(380,21): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\matrixMath.h(123): warning C4715: 'matrix<3,1>::Set<3,1>': not all control paths return a value
+C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\matrixMath.h(123): warning C4715: 'matrix<4,4>::Set<4,4>': not all control paths return a value
+C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\matrixMath.h(160): warning C4715: 'matrix<4,4>::Set<4,4>': not all control paths return a value
   openGl-Graphics.vcxproj -> C:\Users\to9751\Documents\Coding\c++\openGL-projects\openGl-engine\x64\Debug\openGl-Graphics.exe

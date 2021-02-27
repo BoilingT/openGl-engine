@@ -287,8 +287,8 @@ int main() {
     {0, 0, 1, 0},
     {0, 0, 0, 1}
     });
-    matrix<4, 4> newTranslationMatrix = *translationMatrix.mult<4, 4>(scaleMatrix);
 
+    matrix<4, 4> newTranslationMatrix = *translationMatrix.mult<4, 4>(scaleMatrix);
     while (!glfwWindowShouldClose(window)) {
         //Input
         processInput(window);
@@ -342,19 +342,19 @@ int main() {
         {0, 0, 0, 1}
         };
 
-        matrix<4, 4>* resultTranslationMatrix = newTranslationMatrix.mult<4, 4>(rotMatrix);
+        matrix<4, 4>* resultTranslationMatrix = newTranslationMatrix.mult<4,4>(rotMatrix);
 
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
                 //transpose
-                //trans[i][j] = resultTranslationMatrix->values[j][i];
+                trans[i][j] = resultTranslationMatrix->values[j][i];
             }
         }
         //cout << resultTranslationMatrix->toString() << endl;
+        resultTranslationMatrix->cleanValues();
         delete[] resultTranslationMatrix;
-        //delete[] transformmatrixz2;
         //delete &transformMatrixz;
         unsigned int transformLocation = glGetUniformLocation(myShader.ID, "transform");
         glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(trans));
@@ -370,7 +370,6 @@ int main() {
         
         //Calculating and limiting fps
         frame_count++;
-        final_time = time(NULL);
         fpsTimeHandler.setTimeEnd();
         double deltaTime = fpsTimeHandler.deltaTime() / 1000000;
         Sleep(1000/(FRAMES_PER_SECOND_CAP) - deltaTime);
@@ -388,7 +387,6 @@ int main() {
                 fpsTimeHandler.setTimeStart(fpsTimeHandler.endTime);
             }
         }
-        return 0;
     }
 
     glfwTerminate();

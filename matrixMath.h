@@ -29,9 +29,10 @@ private:
 			}
 		}
 
-		cout << "Address1: " << Matrix << " Rows: " << rows << " Columns: " << columns<< endl;
+		//cout << "Address1: " << Matrix << " Rows: " << rows << " Columns: " << columns<< endl;
 		return Matrix;
 	}
+
 
 public:
 
@@ -39,26 +40,48 @@ public:
 	int rowCount = 0;
 	float** values = 0;
 
-	//Create a matrix containing only zeros (0).
-	matrix() {
-		columnCount = columns;
-		rowCount = rows;
-		values = createMatrix<rows, columns>();
-		//cout << "Address2: " << (values) << " Rows: " << rows << " Columns: " << columns << endl;
+	void cleanValues() {
+		if (values != 0)
+		{
+			for (int i = 0; i < rows; i++)
+			{
+				delete[] values[i];
+			}
+			delete[] values;
+		}
 	}
+
+	//Create a matrix containing only zeros (0).
 
 	matrix(float* arr1d) {
 		columnCount = columns;
 		rowCount = rows;
+		if (values == 0)
+		{
+			values = createMatrix<rows, columns>();
+		}
 		Set<rows, columns>(arr1d);
+	}
+
+	matrix(float** arr2d) {
+		columnCount = columns;
+		rowCount = rows;
+		if (values == 0)
+		{
+			values = createMatrix<rows, columns>();
+		}
+
+		Set<rows, columns>(arr2d);
 	}
 
 	//Create a matrix with specified data.
 	matrix(float arr2d[rows][columns]) {
 		columnCount = columns;
 		rowCount = rows;
-		values = createMatrix<rows, columns>();
-
+		if (values == 0)
+		{
+			values = createMatrix<rows, columns>(); //Mem leak
+		}
 		Set<rows, columns>(arr2d);
 	}
 
@@ -67,7 +90,7 @@ public:
 	template <int r, int c>
 	matrix Set(float arr2d[r][c]) {
 		//cout << "r = " << r << " c = " << c << " rows = " << rows << " cols = " << columns << endl;
-		if (r == rows && c == columns) //If the matrix has the same size as the one before
+		if (r == rows && c == columns && values != 0) //If the matrix has the same size as the one before
 		{
 			for (int col = 0; col < columnCount; col++)
 			{
@@ -80,8 +103,8 @@ public:
 		}
 		else if (r != rows || c != columns || values == 0) //If the matrix has another size then the one before
 		{
-			if (values != 0) {
-				delete[] values;
+			if (values != 0) { // Because new values are going to be set the previous ones have to get deleted so that garbage wont be piled up
+				cleanValues();
 			}
 			values = 0;
 			values = createMatrix<r,c>();
@@ -100,11 +123,49 @@ public:
 	}
 
 	//Set new data into the matrix or new data with different dimensions to create a whole new and different matrix.
+	//Takes an 2d array as input.
+	template <int r, int c>
+	matrix Set(float** arr2d) {
+		//cout << "r = " << r << " c = " << c << " rows = " << rows << " cols = " << columns << endl;
+		if (r == rows && c == columns && values != 0) //If the matrix has the same size as the one before
+		{
+			for (int col = 0; col < columnCount; col++)
+			{
+				for (int row = 0; row < rowCount; row++)
+				{
+					values[row][col] = arr2d[row][col];
+				}
+			}
+			return *this;
+		}
+		else if (r != rows || c != columns || values == 0) //If the matrix has another size then the one before
+		{
+			if (values != 0) {
+				cleanValues();
+			}
+			values = 0;
+			values = createMatrix<r, c>();
+
+			columnCount = c;
+			rowCount = r;
+			for (int col = 0; col < c; col++)
+			{
+				for (int row = 0; row < r; row++)
+				{
+					values[row][col] = arr2d[row][col];
+				}
+			}
+			return *this;
+		}
+	}
+
+
+	//Set new data into the matrix or new data with different dimensions to create a whole new and different matrix.
 	//Takes a one dimensional array (like a vector).
 	template <int r, int c>
 	matrix Set(float * arr1d) {
 		//cout << "r = " << r << " c = " << c << " rows = " << rows << " cols = " << columns << endl;
-		if (r == rows && c == columns)
+		if (r == rows && c == columns && values != 0)
 		{
 			for (int col = 0; col < columnCount; col++)
 			{
@@ -119,7 +180,7 @@ public:
 		{
 			if (values != 0)
 			{
-				delete[] values;
+				cleanValues();
 			}
 			values = 0;
 			values = createMatrix(r, c);
@@ -294,23 +355,20 @@ public:
 			}
 			
 			//float result[rows][p];
-			matrix<rows, p>* res = new matrix<rows, p>();
-			res->values = createMatrix<rows, p>();
+			matrix<rows, p>* res = new matrix<4,4>(product);
+			
+
 			for (int i = 0; i < rows; i++)
 			{
-				for (int j = 0; j < p; j++)
-				{
-					res->values[i][j] = product[i][j];
-				}
+				delete[] product[i];
 			}
-
 			delete[] product;
 
 			return res;
 		}
 		else
 		{
-			matrix<rows, p>* res = new matrix<rows, p>();
+			matrix<rows, p>* res = 0;
 			cerr << "Error: Can not multiply: column count isn't the same as the other's row count" << endl;
 			return res;
 		}

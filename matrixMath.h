@@ -89,7 +89,7 @@ public:
 		rowCount = rows;
 		if (values == 0)
 		{
-			values = createMatrix<rows, columns>(); //Mem leak
+			values = createMatrix<rows, columns>();
 		}
 		Set<rows, columns>(arr2d);
 	}

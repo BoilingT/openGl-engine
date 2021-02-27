@@ -8,9 +8,9 @@ C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\chronoTime.h(27,90): 
               _Rep=__int64
           ]
 C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(87,21): warning C4244: 'initializing': conversion from 'time_t' to 'double', possible loss of data
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(309,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(381,44): warning C4244: 'argument': conversion from 'double' to 'DWORD', possible loss of data
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(386,21): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(310,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(384,44): warning C4244: 'argument': conversion from 'double' to 'DWORD', possible loss of data
+C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(389,21): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
 C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\matrixMath.h(132): warning C4715: 'matrix<3,1>::Set<3,1>': not all control paths return a value
 C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\matrixMath.h(132): warning C4715: 'matrix<4,4>::Set<4,4>': not all control paths return a value
 C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\matrixMath.h(169): warning C4715: 'matrix<4,4>::Set<4,4>': not all control paths return a value

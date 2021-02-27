@@ -90,6 +90,7 @@ void setFPS(GLFWwindow* window, int fps);
 
 int main() {
 
+    //Set framerate
     fileHandler file;
     string fileContent;
     if (file.readFile("options.txt", fileContent))
@@ -282,10 +283,10 @@ int main() {
     });
 
     matrix<4,4> scaleMatrix(new float[4][4]{
-    {1, 0, 0, 0},
-    {0, 1, 0, 0},
-    {0, 0, 1, 0},
-    {0, 0, 0, 1}
+        {1, 0, 0, 0},
+        {0, 1, 0, 0},
+        {0, 0, 1, 0},
+        {0, 0, 0, 1}
     });
 
     matrix<4, 4> newTranslationMatrix = *translationMatrix.mult<4, 4>(scaleMatrix);
@@ -309,7 +310,7 @@ int main() {
         float timeValue = glfwGetTime();
         glm::mat4 trans = glm::mat4(1.0f);
 
-        float rotMatrix[4][4] = {
+        float rotMatrixZ[4][4] = {
             {cosf(timeValue), -sinf(timeValue), 0, 0},
             {sinf(timeValue), cosf(timeValue), 0, 0},
             {0, 0, 1, 0},
@@ -323,7 +324,7 @@ int main() {
             {0, 0, 0, 1}
         });*/
 
-        float transformMatrixy[4][4]{
+        float rotMatrixY[4][4]{
             {cosf(timeValue), 0, sinf(timeValue), 0},
             {0, 1, 0, 0},
             {-sinf(timeValue), 0, cos(timeValue), 0},
@@ -338,15 +339,16 @@ int main() {
         };
 
         float m1[4][4] = {
-        {1, 0, 0, 0.2f},
-        {0, 1, 0, 0},
-        {0, 0, 1, 0},
-        {0, 0, 0, 1}
+            {1, 0, 0, 0.2f},
+            {0, 1, 0, 0},
+            {0, 0, 1, 0},
+            {0, 0, 0, 1}
         };
 
-        matrix<4, 4> multMatrix(rotMatrix);
+        matrix<4, 4> rotationZ(rotMatrixZ);
+        //matrix<4, 4> rotationY(rotMatrixY);
 
-        resultTranslationMatrix = newTranslationMatrix.mult<4,4>(multMatrix); //Mem leak
+        resultTranslationMatrix = newTranslationMatrix.mult<4,4>(rotationZ);
 
         for (int i = 0; i < 4; i++)
         {
@@ -359,7 +361,8 @@ int main() {
         //cout << resultTranslationMatrix->toString() << endl;
         resultTranslationMatrix->cleanValues();
         delete[] resultTranslationMatrix;
-        multMatrix.cleanValues();
+        rotationZ.cleanValues();
+        //rotationY.cleanValues();
 
 
         unsigned int transformLocation = glGetUniformLocation(myShader.ID, "transform");

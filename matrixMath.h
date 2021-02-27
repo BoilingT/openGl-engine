@@ -10,9 +10,10 @@ class matrix {
 
 private:
 
-	float** createMatrix(int m, int n) {
+	template <unsigned int m, unsigned int n>
+	float** createMatrix() {
 
-		float** Matrix = nullptr;
+		float** Matrix;
 		Matrix = 0;
 		Matrix = new float* [m];
 
@@ -36,12 +37,13 @@ public:
 
 	int columnCount = 0;
 	int rowCount = 0;
-	float** values = createMatrix(rows, columns);
+	float** values = 0;
 
 	//Create a matrix containing only zeros (0).
 	matrix() {
 		columnCount = columns;
 		rowCount = rows;
+		values = createMatrix<rows, columns>();
 	}
 
 	matrix(float* arr1d) {
@@ -54,6 +56,7 @@ public:
 	matrix(float arr2d[rows][columns]) {
 		columnCount = columns;
 		rowCount = rows;
+		values = createMatrix<rows, columns>();
 		Set<rows, columns>(arr2d);
 	}
 
@@ -62,7 +65,7 @@ public:
 	template <int r, int c>
 	matrix Set(float arr2d[r][c]) {
 		//cout << "r = " << r << " c = " << c << " rows = " << rows << " cols = " << columns << endl;
-		if (r == rows && c == columns)
+		if (r == rows && c == columns) //If the matrix has the same size as the one before
 		{
 			for (int col = 0; col < columnCount; col++)
 			{
@@ -73,10 +76,13 @@ public:
 			}
 			return *this;
 		}
-		else if (r != rows || c != columns)
+		else if (r != rows || c != columns || values == 0) //If the matrix has another size then the one before
 		{
+			if (values != 0) {
+				delete[] values;
+			}
 			values = 0;
-			values = createMatrix(r, c);
+			values = createMatrix<r,c>();
 			columnCount = c;
 			rowCount = r;
 			for (int col = 0; col < c; col++)
@@ -106,12 +112,14 @@ public:
 			}
 			return *this;
 		}
-		else if (r != rows || c != columns)
+		else if (r != rows || c != columns || values == 0)
 		{
+			if (values != 0)
+			{
+				delete[] values;
+			}
 			values = 0;
-			delete [] values;
 			values = createMatrix(r, c);
-			//delete[] Matrix;
 			columnCount = c;
 			rowCount = r;
 			for (int col = 0; col < c; col++)
@@ -246,7 +254,7 @@ public:
 	matrix<rows, p>* mult(matrix<n, p> multMatrix) {
 		if (columnCount == n)
 		{
-			float** product = createMatrix(rows, p);
+			float** product = createMatrix<rows,p>();
 			/*float** tempValuesMatrix = createMatrix(rows, columns);
 
 			for (int i = 0; i < rows; i++)
@@ -263,26 +271,28 @@ public:
 			columnCount = p;
 			rowCount = rows;
 			//Go through each row of the first matrix
-
-			for (int row = 0; row < rowCount; row++)
+			if (values != 0)
 			{
-				for (int column = 0; column < p; column++)
+				for (int row = 0; row < rowCount; row++)
 				{
-					//Calculate the dot product
-					for (int inner = 0; inner < columnCount; inner++)
+					for (int column = 0; column < p; column++)
 					{
-						//cout << " Inner: " << inner << "Column: " << column << endl;
-						//cout << "values: " << values[row][inner] << " * " << " multvalues: " << multMatrix.values[inner][column] << endl;
-						product[row][column] += (values[row][inner] * multMatrix.values[inner][column]);
+						//Calculate the dot product
+						for (int inner = 0; inner < columnCount; inner++)
+						{
+							//cout << " Inner: " << inner << "Column: " << column << endl;
+							//cout << "values: " << values[row][inner] << " * " << " multvalues: " << multMatrix.values[inner][column] << endl;
+							product[row][column] += (values[row][inner] * multMatrix.values[inner][column]);
+						}
+						//cout << product[row][column] << ", ";
 					}
-					//cout << product[row][column] << ", ";
+					//cout << "\n";
 				}
-				//cout << "\n";
 			}
 			
 			//float result[rows][p];
 			matrix<rows, p>* res = new matrix<rows, p>();
-			res->values = createMatrix(rows, p);
+			res->values = createMatrix<rows, p>();
 			for (int i = 0; i < rows; i++)
 			{
 				for (int j = 0; j < p; j++)

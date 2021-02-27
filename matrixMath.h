@@ -13,16 +13,15 @@ private:
 	template <unsigned int m, unsigned int n>
 	float** createMatrix() {
 
-		float** Matrix;
-		Matrix = 0;
-		Matrix = new float* [m];
+		float** Matrix = nullptr;
+		Matrix = new float* [m]; //Create the rows
 
-		for (int i = 0; i < m; i++)
+		for (int i = 0; i < m; i++) //Create the columns
 		{
 			Matrix[i] = new float[n];
 		}
 
-		for (int i = 0; i < m; i++)
+		for (int i = 0; i < m; i++) //Fill the matrix with 0:os
 		{
 			for (int j = 0; j < n; j++)
 			{
@@ -30,6 +29,7 @@ private:
 			}
 		}
 
+		cout << "Address1: " << Matrix << " Rows: " << rows << " Columns: " << columns<< endl;
 		return Matrix;
 	}
 
@@ -44,6 +44,7 @@ public:
 		columnCount = columns;
 		rowCount = rows;
 		values = createMatrix<rows, columns>();
+		//cout << "Address2: " << (values) << " Rows: " << rows << " Columns: " << columns << endl;
 	}
 
 	matrix(float* arr1d) {
@@ -57,6 +58,7 @@ public:
 		columnCount = columns;
 		rowCount = rows;
 		values = createMatrix<rows, columns>();
+
 		Set<rows, columns>(arr2d);
 	}
 
@@ -83,6 +85,7 @@ public:
 			}
 			values = 0;
 			values = createMatrix<r,c>();
+
 			columnCount = c;
 			rowCount = r;
 			for (int col = 0; col < c; col++)

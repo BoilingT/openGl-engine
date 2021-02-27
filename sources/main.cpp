@@ -349,10 +349,10 @@ int main() {
             for (int j = 0; j < 4; j++)
             {
                 //transpose
-                trans[i][j] = resultTranslationMatrix->values[j][i];
+                //trans[i][j] = resultTranslationMatrix->values[j][i];
             }
         }
-        cout << resultTranslationMatrix->toString() << endl;
+        //cout << resultTranslationMatrix->toString() << endl;
         delete[] resultTranslationMatrix;
         //delete[] transformmatrixz2;
         //delete &transformMatrixz;
@@ -388,6 +388,7 @@ int main() {
                 fpsTimeHandler.setTimeStart(fpsTimeHandler.endTime);
             }
         }
+        return 0;
     }
 
     glfwTerminate();

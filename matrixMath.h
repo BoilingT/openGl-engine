@@ -53,6 +53,15 @@ public:
 
 	//Create a matrix containing only zeros (0).
 
+	matrix() {
+		columnCount = columns;
+		rowCount = rows;
+		if (values == 0)
+		{
+			values = createMatrix<rows, columns>();
+		}
+	}
+
 	matrix(float* arr1d) {
 		columnCount = columns;
 		rowCount = rows;
@@ -355,7 +364,7 @@ public:
 			}
 			
 			//float result[rows][p];
-			matrix<rows, p>* res = new matrix<4,4>(product);
+			matrix<rows, p>* res = new matrix<rows, p>(product);
 			
 
 			for (int i = 0; i < rows; i++)
@@ -368,9 +377,8 @@ public:
 		}
 		else
 		{
-			matrix<rows, p>* res = 0;
 			cerr << "Error: Can not multiply: column count isn't the same as the other's row count" << endl;
-			return res;
+			return this;
 		}
 	}
 };

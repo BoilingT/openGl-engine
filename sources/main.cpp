@@ -289,7 +289,8 @@ int main() {
     });
 
     matrix<4, 4> newTranslationMatrix = *translationMatrix.mult<4, 4>(scaleMatrix);
-    matrix<4, 4>* resultTranslationMatrix;
+    matrix<4, 4>* resultTranslationMatrix = new matrix<4, 4>();
+
     while (!glfwWindowShouldClose(window)) {
         //Input
         processInput(window);
@@ -343,7 +344,9 @@ int main() {
         {0, 0, 0, 1}
         };
 
-        resultTranslationMatrix = newTranslationMatrix.mult<4,4>(rotMatrix);
+        matrix<4, 4> multMatrix(rotMatrix);
+
+        resultTranslationMatrix = newTranslationMatrix.mult<4,4>(multMatrix); //Mem leak
 
         for (int i = 0; i < 4; i++)
         {
@@ -355,7 +358,10 @@ int main() {
         }
         //cout << resultTranslationMatrix->toString() << endl;
         resultTranslationMatrix->cleanValues();
-        //delete &transformMatrixz;
+        delete[] resultTranslationMatrix;
+        multMatrix.cleanValues();
+
+
         unsigned int transformLocation = glGetUniformLocation(myShader.ID, "transform");
         glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(trans));
 

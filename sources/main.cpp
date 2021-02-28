@@ -292,6 +292,11 @@ int main() {
     matrix<4, 4> newTranslationMatrix = *translationMatrix.mult<4, 4>(scaleMatrix);
     matrix<4, 4>* resultTranslationMatrix = new matrix<4, 4>();
 
+    Matrix<float> myMatrix(4, 4, NULL);
+    cout << myMatrix.toString() << endl;
+    //delete myMatrix;
+    
+
     while (!glfwWindowShouldClose(window)) {
         //Input
         processInput(window);

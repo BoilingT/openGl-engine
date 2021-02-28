@@ -5,6 +5,123 @@
 
 using namespace std;
 
+template <typename T>
+class Matrix {
+private:
+	template <typename _T>
+	_T** getMatrix(unsigned int _rows, unsigned int _columns, _T _fill) {
+		_T** newMatrix = new _T * [_rows];
+
+		for (int i = 0; i < _rows; i++) // Create the columns.
+		{
+			newMatrix[i] = new _T [_columns];
+		}
+
+		for (int i = 0; i < _rows; i++)
+		{
+			for (int j = 0; j < _columns; j++)
+			{
+				newMatrix[i][j] = (_fill != NULL ? _fill : 0); // If the fill parameter isnt assigned any value the matrix will be filled with zeros.
+			}
+		}
+		return newMatrix;
+	}
+
+
+	int columns;
+	int rows;
+	float** p_Values = nullptr;
+
+	// If the size of the matrix is the same this function should be used
+	void setValues(T** _values) {
+		p_Values = getMatrix<T>(rows, columns, NULL);
+
+		if (_values != NULL)
+		{
+			for (int i = 0; i < rows; i++)
+			{
+				for (int j = 0; j < columns; j++)
+				{
+					p_Values[i][j] = _values[i][j];
+				}
+			}
+		}
+	}
+
+	// If the size of the matrix is different this function should be used
+	void replaceValues(T** values) {
+
+	}
+
+	void clean() {
+		if (p_Values != nullptr)
+		{
+			try
+			{
+				for (int i = 0; i < rows; i++)
+				{
+					delete[] p_Values[i];
+				}
+				delete[] p_Values;
+			}
+			catch (const std::exception& e)
+			{
+				cerr << "ERROR::CLEANING::FAILED:\n" << e.what() << endl;
+			}
+		}
+	}
+
+public:
+
+	Matrix() {
+		cout << "Constructed" << endl;
+	}
+
+	Matrix(unsigned int _rows, unsigned int _columns, T** _values){
+		rows = _rows; columns = _columns;
+		setValues(_values);
+		cout << "Constructed" << endl;
+	}
+
+	~Matrix() {
+		clean();
+		cout << "Destructed" << endl;
+	}
+	
+	int getColumnCount() {
+		return columns;
+	}
+
+	int getRowCount() {
+		return rows;
+	}
+
+	T** getValues() {
+		return p_Values;
+	}
+
+	string toString() {
+		string str;
+		for (int row = 0; row < rows; row++)
+		{
+			str += "{  ";
+			for (int col = 0; col < columns; col++)
+			{
+				try
+				{
+					str += to_string(p_Values[row][col]) + "  ";
+				}
+				catch (const std::exception&)
+				{
+					return NULL;
+				}
+			}
+			str += "}\n";
+		}
+		return str;
+	}
+};
+
 template <unsigned int rows, unsigned int columns>
 class matrix {
 

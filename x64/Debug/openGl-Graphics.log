@@ -8,36 +8,8 @@ C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\chronoTime.h(27,90): 
               _Rep=__int64
           ]
 C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(87,21): warning C4244: 'initializing': conversion from 'time_t' to 'double', possible loss of data
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(315,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(389,44): warning C4244: 'argument': conversion from 'double' to 'DWORD', possible loss of data
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(394,21): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\matrixMath.h(15,2): warning C4018: '<': signed/unsigned mismatch
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\matrixMath.h(37): message : see reference to function template instantiation '_T **Matrix<float>::getMatrix<T>(unsigned int,unsigned int,_T)' being compiled
-          with
-          [
-              _T=float,
-              T=float
-          ]
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\matrixMath.h(37): message : see reference to function template instantiation '_T **Matrix<float>::getMatrix<T>(unsigned int,unsigned int,_T)' being compiled
-          with
-          [
-              _T=float,
-              T=float
-          ]
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\matrixMath.h(36): message : while compiling class template member function 'void Matrix<float>::setValues(T **)'
-          with
-          [
-              T=float
-          ]
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\matrixMath.h(82): message : see reference to function template instantiation 'void Matrix<float>::setValues(T **)' being compiled
-          with
-          [
-              T=float
-          ]
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(295): message : see reference to class template instantiation 'Matrix<float>' being compiled
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\matrixMath.h(20,2): warning C4018: '<': signed/unsigned mismatch
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\matrixMath.h(22,2): warning C4018: '<': signed/unsigned mismatch
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\matrixMath.h(249): warning C4715: 'matrix<3,1>::Set<3,1>': not all control paths return a value
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\matrixMath.h(249): warning C4715: 'matrix<4,4>::Set<4,4>': not all control paths return a value
-C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\matrixMath.h(286): warning C4715: 'matrix<4,4>::Set<4,4>': not all control paths return a value
+C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(344,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(416,44): warning C4244: 'argument': conversion from 'double' to 'DWORD', possible loss of data
+C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\sources\main.cpp(421,21): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\matrixMath.h(356): warning C4715: 'matrix<3,1>::Set<3,1>': not all control paths return a value
   openGl-Graphics.vcxproj -> C:\Users\tobbe\Documents\Coding\C++\learning\openGl-engine\x64\Debug\openGl-Graphics.exe

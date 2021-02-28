@@ -5,11 +5,11 @@
 
 using namespace std;
 
-template <typename T>
+template <typename T, const int rowCount, const int columnCount>
 class Matrix {
 private:
 	template <typename _T>
-	_T** getMatrix(unsigned int _rows, unsigned int _columns, _T _fill) {
+	_T** getMatrix(const int _rows, const int _columns, _T _fill) {
 		_T** newMatrix = new _T * [_rows];
 
 		for (int i = 0; i < _rows; i++) // Create the columns.
@@ -48,6 +48,22 @@ private:
 		}
 	}
 
+	// If the size of the matrix is the same this function should be used
+	void setValues(T _values[rowCount][columnCount]) {
+		p_Values = getMatrix<T>(rows, columns, NULL);
+
+		if (_values != NULL)
+		{
+			for (int i = 0; i < rows; i++)
+			{
+				for (int j = 0; j < columns; j++)
+				{
+					p_Values[i][j] = _values[i][j];
+				}
+			}
+		}
+	}
+
 	// If the size of the matrix is different this function should be used
 	void replaceValues(T** values) {
 
@@ -58,11 +74,11 @@ private:
 		{
 			try
 			{
-				for (int i = 0; i < rows; i++)
+				for (int i = 0; i < rows; i++) // Delete the pointers inside the list of pointers
 				{
 					delete[] p_Values[i];
 				}
-				delete[] p_Values;
+				delete[] p_Values; // Delete the pointer that pointed to the list
 			}
 			catch (const std::exception& e)
 			{
@@ -73,50 +89,141 @@ private:
 
 public:
 
-	Matrix() {
-		cout << "Constructed" << endl;
-	}
-
-	Matrix(unsigned int _rows, unsigned int _columns, T** _values){
-		rows = _rows; columns = _columns;
+	Matrix(T** _values) {
+		rows = rowCount; columns = columnCount;
 		setValues(_values);
-		cout << "Constructed" << endl;
+		//cout << "Constructed: " << rowCount << "x" << columnCount << endl;
+	}
+	//template <unsigned int _rows, unsigned int _columns>
+	Matrix(T _values[rowCount][columnCount]) {
+		rows = rowCount; columns = columnCount;
+		setValues(_values);
+		//cout << "Constructed: " << rowCount << "x" << columnCount << endl;
 	}
 
 	~Matrix() {
 		clean();
-		cout << "Destructed" << endl;
+		//cout << "Destructed" << rowCount << "x" << columnCount << endl;
 	}
 	
+	// Get the number of columns
 	int getColumnCount() {
 		return columns;
 	}
 
+	// Get the number of rows
 	int getRowCount() {
 		return rows;
 	}
 
+	// Get the pointer to the matrix values
 	T** getValues() {
 		return p_Values;
 	}
 
-	string toString() {
-		string str;
-		for (int row = 0; row < rows; row++)
+	// Returns a pointer to a new transposed version of a matrix
+	Matrix<T, rowCount, columnCount>* Transposed() {
+		T tempValues[rowCount][columnCount];
+		if (p_Values != nullptr)
 		{
-			str += "{  ";
-			for (int col = 0; col < columns; col++)
+
+			for (int i = 0; i < rowCount; i++)
 			{
-				try
+				for (int j = 0; j < columnCount; j++)
 				{
-					str += to_string(p_Values[row][col]) + "  ";
-				}
-				catch (const std::exception&)
-				{
-					return NULL;
+					tempValues[i][j] = p_Values[j][i];
 				}
 			}
-			str += "}\n";
+		}
+		Matrix<T, rowCount, columnCount>* transposedMatrix = new Matrix<T, rowCount, columnCount>(tempValues);
+		return transposedMatrix;
+	}
+
+	template <int _OtherRows, int _OtherColumns>
+	Matrix<T, rowCount, _OtherColumns>* MatrixMult(Matrix<T, _OtherRows, _OtherColumns>* OtherMatrix) {
+		T product[rowCount][_OtherColumns];
+
+		for (int i = 0; i < rowCount; i++)
+		{
+			for (int j = 0; j < _OtherColumns; j++)
+			{
+				product[i][j] = 0;
+			}
+		}
+		
+		if (p_Values != nullptr && columnCount == _OtherRows)
+		{
+			for (int row = 0; row < rowCount; row++)
+			{
+				for (int column = 0; column < _OtherColumns; column++)
+				{
+					//Calculate the dot product
+					for (int inner = 0; inner < columnCount; inner++)
+					{
+						product[row][column] += (p_Values[row][inner] * OtherMatrix->getValues()[inner][column]);
+					}
+				}
+			}
+		}
+
+		Matrix<T, rowCount, _OtherColumns>* resultMatrix = new Matrix<T, rowCount, _OtherColumns>(product);
+		
+		return resultMatrix;
+	}
+
+	template <int _OtherRows, int _OtherColumns>
+	Matrix<T, rowCount, _OtherColumns>* MatrixMult(Matrix<T, _OtherRows, _OtherColumns> OtherMatrix) {
+		T product[rowCount][_OtherColumns];
+
+		for (int i = 0; i < rowCount; i++)
+		{
+			for (int j = 0; j < _OtherColumns; j++)
+			{
+				product[i][j] = 0;
+			}
+		}
+
+		if (p_Values != nullptr && columnCount == _OtherRows)
+		{
+			for (int row = 0; row < rowCount; row++)
+			{
+				for (int column = 0; column < _OtherColumns; column++)
+				{
+					//Calculate the dot product
+					for (int inner = 0; inner < columnCount; inner++)
+					{
+						product[row][column] += (p_Values[row][inner] * OtherMatrix.getValues()[inner][column]);
+					}
+				}
+			}
+		}
+
+		Matrix<T, rowCount, _OtherColumns>* resultMatrix = new Matrix<T, rowCount, _OtherColumns>(product);
+
+		return resultMatrix;
+	}
+
+	// Returns a readable version of a matrix
+	string toString() {
+		string str;
+		if (p_Values != nullptr)
+		{
+			for (int row = 0; row < rows; row++)
+			{
+				str += "{  ";
+				for (int col = 0; col < columns; col++)
+				{
+					try
+					{
+						str += to_string(p_Values[row][col]) + "  ";
+					}
+					catch (const std::exception&)
+					{
+						return NULL;
+					}
+				}
+				str += "}\n";
+			}
 		}
 		return str;
 	}

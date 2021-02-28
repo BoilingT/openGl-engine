@@ -275,29 +275,58 @@ int main() {
 
     fpsTimeHandler.setTimeStart();
     //This runs while the window has not gotten the instructions to close
-    matrix<4, 4> translationMatrix(new float[4][4]{
-        {1, 0, 0, 0.5f},
-        {0, 1, 0, 0.2f},
-        {0, 0, 1, 0},
-        {0, 0, 0, 1}
-    });
+    
+    /*
+    Matrix<float, 4, 4> myMatrix(m1);
+    cout << myMatrix.toString() << endl;
+    Matrix<float, 4, 4>* myTransposedMatrix = myMatrix.Transposed();
+    cout << myTransposedMatrix->toString() << endl;
+    delete myTransposedMatrix;*/
 
-    matrix<4,4> scaleMatrix(new float[4][4]{
+    float A[3][2] = {
+            {1, 3},
+            {4, -1},
+            {-5, 10}
+    };
+
+    float B[2][2] = {
+            {2, 1},
+            {-8, 6}
+    };
+
+    /*Matrix<float, 3, 2> mA(A);
+    Matrix<float, 2, 2>* mB = new Matrix<float, 2, 2>(B);
+    Matrix<float, 3, 2>* resultMat = mA.MatrixMult(mB);
+    cout << resultMat->toString() << endl;
+    delete resultMat;
+    delete mB;*/
+
+    float translation[4][4]{
+       {1, 0, 0, 0.5f},
+       {0, 1, 0, 0.2f},
+       {0, 0, 1, 0},
+       {0, 0, 0, 1}
+    };
+
+    float scale[4][4]{
         {1, 0, 0, 0},
         {0, 1, 0, 0},
         {0, 0, 1, 0},
         {0, 0, 0, 1}
-    });
+    };
 
-    matrix<4, 4> newTranslationMatrix = *translationMatrix.mult<4, 4>(scaleMatrix);
-    matrix<4, 4>* resultTranslationMatrix = new matrix<4, 4>();
+    Matrix<float, 4, 4>* translationMatrix = new Matrix<float, 4, 4>(translation);
 
-    Matrix<float> myMatrix(4, 4, NULL);
-    cout << myMatrix.toString() << endl;
-    //delete myMatrix;
-    
+    Matrix<float, 4, 4>* scaleMatrix = new Matrix<float, 4, 4>(scale);
+
+    Matrix<float, 4, 4> newTranslationMatrix = *translationMatrix->MatrixMult<4, 4>(scaleMatrix);
+    cout << "new: " << translationMatrix->toString() << endl;
+
+    delete translationMatrix;
+    delete scaleMatrix;
 
     while (!glfwWindowShouldClose(window)) {
+
         //Input
         processInput(window);
 
@@ -312,10 +341,10 @@ int main() {
         glBindTexture(GL_TEXTURE_2D, texture2);
 
         //Process
-        float timeValue = glfwGetTime();
+        float timeValue = glfwGetTime()*2;
         glm::mat4 trans = glm::mat4(1.0f);
 
-        float rotMatrixZ[4][4] = {
+        float rotateZ[4][4] = {
             {cosf(timeValue), -sinf(timeValue), 0, 0},
             {sinf(timeValue), cosf(timeValue), 0, 0},
             {0, 0, 1, 0},
@@ -329,47 +358,45 @@ int main() {
             {0, 0, 0, 1}
         });*/
 
-        float rotMatrixY[4][4]{
+        float rotateY[4][4]{
             {cosf(timeValue), 0, sinf(timeValue), 0},
             {0, 1, 0, 0},
             {-sinf(timeValue), 0, cos(timeValue), 0},
             {0, 0, 0, 1}
         };
 
-        float transformMatrixx[4][4]{
+        float rotateX[4][4]{
             {1, 0, 0, 0},
             {0, cosf(timeValue), -sinf(timeValue), 0},
             {0, sinf(timeValue), cosf(timeValue), 0},
             {0, 0, 0, 1}
         };
 
-        float m1[4][4] = {
-            {1, 0, 0, 0.2f},
-            {0, 1, 0, 0},
-            {0, 0, 1, 0},
-            {0, 0, 0, 1}
-        };
+        
+        Matrix<float, 4, 4>* rotMatrixZ = new Matrix<float, 4, 4>(rotateZ);
+        Matrix<float, 4, 4>* rotMatrixY = new Matrix<float, 4, 4>(rotateY);
+        Matrix<float, 4, 4>* rotMatrixX = new Matrix<float, 4, 4>(rotateX);
 
-        matrix<4, 4> rotationZ(rotMatrixZ);
-        //matrix<4, 4> rotationY(rotMatrixY);
-
-        resultTranslationMatrix = newTranslationMatrix.mult<4,4>(rotationZ);
+        Matrix<float, 4, 4>* rotatedMatrixZ = newTranslationMatrix.MatrixMult<4, 4>(rotMatrixZ);
+        Matrix<float, 4, 4>* rotatedMatrixY = rotatedMatrixZ->MatrixMult<4, 4>(rotMatrixY);
+        Matrix<float, 4, 4>* rotatedMatrixX = rotatedMatrixY->MatrixMult<4, 4>(rotMatrixX);
 
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
                 //transpose
-                trans[i][j] = resultTranslationMatrix->values[j][i];
+                trans[i][j] = rotatedMatrixX->getValues()[j][i];
             }
         }
         //cout << resultTranslationMatrix->toString() << endl;
-        resultTranslationMatrix->cleanValues();
-        delete[] resultTranslationMatrix;
-        rotationZ.cleanValues();
-        //rotationY.cleanValues();
 
-
+        delete rotMatrixZ;
+        delete rotMatrixY;
+        delete rotMatrixX;
+        delete rotatedMatrixX;
+        delete rotatedMatrixY;
+        delete rotatedMatrixZ;
         unsigned int transformLocation = glGetUniformLocation(myShader.ID, "transform");
         glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(trans));
 

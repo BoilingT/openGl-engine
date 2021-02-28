@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="mainEngine.cpp" />
     <ClCompile Include="sources\Shader.cpp" />
     <ClCompile Include="sources\fileHandler.cpp" />
     <ClCompile Include="sources\glad.c" />
@@ -28,6 +29,7 @@
   <ItemGroup>
     <ClInclude Include="chronoTime.h" />
     <ClInclude Include="fileHandler.h" />
+    <ClInclude Include="mainEngine.h" />
     <ClInclude Include="matrixMath.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stb_image.h" />

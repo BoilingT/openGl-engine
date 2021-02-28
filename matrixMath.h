@@ -172,7 +172,7 @@ public:
 	}
 
 	template <int _OtherRows, int _OtherColumns>
-	Matrix<T, rowCount, _OtherColumns>* MatrixMult(Matrix<T, _OtherRows, _OtherColumns> OtherMatrix) {
+	Matrix<T, rowCount, _OtherColumns>* MatrixMult(Matrix<T, _OtherRows, _OtherColumns> &OtherMatrix) {
 		T product[rowCount][_OtherColumns];
 
 		for (int i = 0; i < rowCount; i++)

@@ -129,7 +129,7 @@ int main() {
         //return -1;
     }
 
-    //Every time the window is resized this will correct it.
+    //Every time the window is resized this will run.
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 #pragma region Vertex
@@ -324,6 +324,7 @@ int main() {
 
     delete translationMatrix;
     delete scaleMatrix;
+    
 
     while (!glfwWindowShouldClose(window)) {
 
@@ -373,9 +374,10 @@ int main() {
         };
 
         
-        Matrix<float, 4, 4>* rotMatrixZ = new Matrix<float, 4, 4>(rotateZ);
-        Matrix<float, 4, 4>* rotMatrixY = new Matrix<float, 4, 4>(rotateY);
-        Matrix<float, 4, 4>* rotMatrixX = new Matrix<float, 4, 4>(rotateX);
+        Matrix<float, 4, 4> rotMatrixZ(rotateZ);
+        Matrix<float, 4, 4> rotMatrixY(rotateY);
+        Matrix<float, 4, 4> rotMatrixX(rotateX);
+        cout << rotMatrixZ.toString() << endl;
 
         Matrix<float, 4, 4>* rotatedMatrixZ = newTranslationMatrix.MatrixMult<4, 4>(rotMatrixZ);
         Matrix<float, 4, 4>* rotatedMatrixY = rotatedMatrixZ->MatrixMult<4, 4>(rotMatrixY);
@@ -391,12 +393,12 @@ int main() {
         }
         //cout << resultTranslationMatrix->toString() << endl;
 
-        delete rotMatrixZ;
-        delete rotMatrixY;
-        delete rotMatrixX;
+        //delete rotMatrixZ;
+
         delete rotatedMatrixX;
         delete rotatedMatrixY;
         delete rotatedMatrixZ;
+
         unsigned int transformLocation = glGetUniformLocation(myShader.ID, "transform");
         glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(trans));
 
@@ -436,6 +438,10 @@ int main() {
     return 0;
 }
 
+void mainLoop() {
+
+}
+
 void setFPS(GLFWwindow* window, int fps) {
     string title = (string)WINDOW_TITLE + "   -   " + to_string(fps) + " FPS";
     glfwSetWindowTitle(window, title.c_str());
@@ -443,4 +449,9 @@ void setFPS(GLFWwindow* window, int fps) {
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height); //Change the viewport to the set width and height
+
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    //Swap buffers and poll IO events
+    glfwSwapBuffers(window);
 }

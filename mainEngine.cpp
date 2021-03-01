@@ -48,6 +48,7 @@ unsigned int texture1, texture2;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height); //Change the viewport to the set width and height
 }
+
 void mainEngine::run() {
 	init();
 	createBuffers();

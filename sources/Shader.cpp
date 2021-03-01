@@ -9,8 +9,13 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath){
 	std::string fShaderFile;
 
 	
-	vertexFile.readFile(vertexPath, vShaderFile);
-	fragmentFile.readFile(fragmentPath, fShaderFile);
+	if (!vertexFile.readFile(vertexPath, vShaderFile)) {
+		throw "Cannot read file";
+	}
+	
+	if (!fragmentFile.readFile(fragmentPath, fShaderFile)) {
+		throw "Cannot read file";
+	}
 	
 	std::cout << vShaderFile << std::endl;
 	std::cout << fShaderFile << std::endl;

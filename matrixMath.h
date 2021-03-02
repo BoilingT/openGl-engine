@@ -88,6 +88,10 @@ private:
 	}
 
 public:
+	Matrix() {
+		rows = rowCount; columns = columnCount;
+		p_Values = getMatrix<T>(rows, columns, NULL);
+	};
 
 	Matrix(T** _values) {
 		rows = rowCount; columns = columnCount;
@@ -174,25 +178,28 @@ public:
 	template <int _OtherRows, int _OtherColumns>
 	Matrix<T, rowCount, _OtherColumns>* MatrixMult(Matrix<T, _OtherRows, _OtherColumns> &OtherMatrix) {
 		T product[rowCount][_OtherColumns];
-
-		for (int i = 0; i < rowCount; i++)
+		if (this != nullptr)
 		{
-			for (int j = 0; j < _OtherColumns; j++)
-			{
-				product[i][j] = 0;
-			}
-		}
 
-		if (p_Values != nullptr && columnCount == _OtherRows)
-		{
-			for (int row = 0; row < rowCount; row++)
+			for (int i = 0; i < rowCount; i++)
 			{
-				for (int column = 0; column < _OtherColumns; column++)
+				for (int j = 0; j < _OtherColumns; j++)
 				{
-					//Calculate the dot product
-					for (int inner = 0; inner < columnCount; inner++)
+					product[i][j] = 0;
+				}
+			}
+
+			if (p_Values != nullptr && columnCount == _OtherRows)
+			{
+				for (int row = 0; row < rowCount; row++)
+				{
+					for (int column = 0; column < _OtherColumns; column++)
 					{
-						product[row][column] += (p_Values[row][inner] * OtherMatrix.getValues()[inner][column]);
+						//Calculate the dot product
+						for (int inner = 0; inner < columnCount; inner++)
+						{
+							product[row][column] += (p_Values[row][inner] * OtherMatrix.getValues()[inner][column]);
+						}
 					}
 				}
 			}

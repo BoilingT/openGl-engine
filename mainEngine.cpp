@@ -176,6 +176,12 @@ void mainEngine::createBuffers() {
 	//GL_STATIC_DRAW: the data is set only once and used many times.
 	//GL_DYNAMIC_DRAW: the data is changed a lot and used many times.
 
+	
+
+#pragma endregion
+}
+
+void mainEngine::createShaders() {
 	//Now the vertex data is stored within the graphics card
 
 	//Process the data with a vertex shader and a fragment shader
@@ -184,21 +190,17 @@ void mainEngine::createBuffers() {
 	//The main purpose of the vertex shader is to transform 3D coordinates into different 3D coordinates
 	//The vertex shader allows us to do some basic processing on the vertex attributes.
 
-#pragma endregion
-}
+	//The GPU has now the vertex data and the instructions on how it should process the vertex data within a vertex and fragment shader.
+	//Next OpenGl has to understand how it should interpret the vertex data in memory and how it should connect the vertex data to the vertex shader's attributes.
 
-void mainEngine::createShaders() {
-//The GPU has now the vertex data and the instructions on how it should process the vertex data within a vertex and fragment shader.
-//Next OpenGl has to understand how it should interpret the vertex data in memory and how it should connect the vertex data to the vertex shader's attributes.
+	//Linking Vertex Attributes
+	//The position data is stored as 32-bit (4 byte) floating point values.
+	//Each position is composed of 3 of those values.
+	//There is no space(or other values) between each set of 3 values.The values are tightly packed in the array.
+	//The first value in the data is at the beginning of the buffer.
 
-//Linking Vertex Attributes
-//The position data is stored as 32-bit (4 byte) floating point values.
-//Each position is composed of 3 of those values.
-//There is no space(or other values) between each set of 3 values.The values are tightly packed in the array.
-//The first value in the data is at the beginning of the buffer.
-
-//Tell openGl how it should interpret the vertex data (per vertex attribute)
-//Position attribute
+	//Tell openGl how it should interpret the vertex data (per vertex attribute)
+	//Position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	//Stride: the space between consecutive vertex attributes.
 	//Since the next set of position data is located exactly 3 times the size of a float away we specify that value as the stride.

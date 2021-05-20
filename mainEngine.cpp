@@ -55,8 +55,6 @@ void mainEngine::run() {
 	createShaders();
 	createTextures();
 
-
-
 	fpsTimeHandler.setTimeStart();
 	//This runs while the window has not gotten the instructions to close
 
@@ -307,7 +305,8 @@ void mainEngine::mainLoop() {
 	glBindTexture(GL_TEXTURE_2D, texture2);
 
 	//Process
-	float timeValue = glfwGetTime() * 2;
+	//float timeValue = glfwGetTime() * 2;
+	float timeValue = 45 * -3.14f / 180;
 	glm::mat4 trans = glm::mat4(1.0f);
 
 	float rotateZ[4][4] = {
